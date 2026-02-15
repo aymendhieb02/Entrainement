@@ -90,7 +90,10 @@ If the repo has multiple folders and the app is in a subfolder, set **Root Direc
 ### 3.5 Environment variables (required on Railway)
 
 In Railway: **Variables** tab. You usually don’t need any for this app.  
-Add **HEADLESS** = **1**. This skips OpenCV/MediaPipe so the app starts without libGL. Video shows a placeholder; run locally for live camera analysis.
+- **Option A (easiest):** Add **HEADLESS** = **1**. App starts; video is a placeholder.
+- **Option B (Use my camera on Railway):** Set **Build Command** to:  
+  `pip install -r requirements.txt && pip uninstall -y opencv-python 2>/dev/null; pip install --force-reinstall --no-deps opencv-python-headless==4.9.0.80`  
+  Then do **not** set HEADLESS and redeploy.
 
 ---
 

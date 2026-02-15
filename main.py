@@ -6,7 +6,8 @@ import time
 import threading
 from collections import deque
 
-# HEADLESS=1 only on Railway (no webcam in cloud). On your PC: do NOT set HEADLESS — camera + analysis work normally.
+# HEADLESS=1 or RAILWAY: skip cv2/mediapipe so app starts (no libGL). On PC do NOT set these — camera works.
+# To use "Use my camera" on Railway: run build with railway_build.sh and leave HEADLESS unset.
 HEADLESS = os.environ.get("RAILWAY") or os.environ.get("HEADLESS") or os.environ.get("DISABLE_CAMERA")
 if HEADLESS:
     cv2 = None
