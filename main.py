@@ -6,17 +6,17 @@ import time
 import threading
 from collections import deque
 
-# HEADLESS=1 or RAILWAY: skip cv2/mediapipe so app starts (no libGL). On PC do NOT set these — camera works.
-# To use "Use my camera" on Railway: run build with railway_build.sh and leave HEADLESS unset.
-HEADLESS = os.environ.get("RAILWAY") or os.environ.get("HEADLESS") or os.environ.get("DISABLE_CAMERA")
-if HEADLESS:
-    cv2 = None
-    mp = None
-    import numpy as np
-else:
+# Try to load cv2/mediapipe. If they fail (e.g. libGL on Railway), run headless so the app still starts.
+import numpy as np
+cv2 = None
+mp = None
+HEADLESS = True
+try:
     import cv2
-    import numpy as np
     import mediapipe as mp
+    HEADLESS = False
+except (ImportError, OSError) as e:
+    print("Running headless (cv2/mediapipe unavailable, e.g. no libGL):", e)
 
 from flask import Flask, Response, render_template, jsonify, request
 
