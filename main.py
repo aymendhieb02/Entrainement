@@ -1,3 +1,4 @@
+import base64
 import json
 import os
 import re
@@ -5,7 +6,7 @@ import time
 import threading
 from collections import deque
 
-# Railway/cloud: no webcam or libGL. Set HEADLESS=1 to skip cv2/mediapipe and use Pillow for placeholder.
+# HEADLESS=1 only on Railway (no webcam in cloud). On your PC: do NOT set HEADLESS — camera + analysis work normally.
 HEADLESS = os.environ.get("RAILWAY") or os.environ.get("HEADLESS") or os.environ.get("DISABLE_CAMERA")
 if HEADLESS:
     cv2 = None
@@ -538,6 +539,79 @@ def video_feed():
     """Video streaming route"""
     return Response(generate_frames(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/api/process_frame', methods=['POST'])
+def process_frame():
+    """Accept a frame from the browser (base64 image), run pose + coach, return reps/feedback/joints.
+    Use this with 'Use my camera' so the server analyses the user's webcam without a server camera.
+    On Railway: remove HEADLESS=1 and use opencv-python-headless so this route works.
+    """
+    if HEADLESS or cv2 is None or pose is None:
+        return jsonify({
+            'error': 'Browser camera mode is disabled. On Railway, remove HEADLESS from Variables and redeploy.'
+        }), 503
+    data = request.get_json()
+    if not data or 'image' not in data:
+        return jsonify({'error': 'Missing image (base64)'}), 400
+    raw = data['image']
+    if ',' in raw:
+        raw = raw.split(',', 1)[1]
+    try:
+        buf = base64.b64decode(raw)
+        nparr = np.frombuffer(buf, dtype=np.uint8)
+        frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    except Exception as e:
+        return jsonify({'error': f'Invalid image: {e}'}), 400
+    if frame is None:
+        return jsonify({'error': 'Could not decode image'}), 400
+    h, w = frame.shape[:2]
+    rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    try:
+        results = pose.process(rgb)
+    except Exception as e:
+        return jsonify({'error': str(e), 'reps': 0, 'feedback': 'ERR', 'form_issue': '', 'joints': []}), 200
+    if not results.pose_landmarks:
+        with exercise_lock:
+            return jsonify({
+                'reps': coach.reps,
+                'feedback': coach.feedback,
+                'form_issue': coach.form_issue or '',
+                'joints': [],
+                'progress': 0.5
+            })
+    lm = {mp_pose.PoseLandmark(i).name.replace('_', '').lower():
+          {'x': l.x, 'y': l.y, 'vis': l.visibility}
+          for i, l in enumerate(results.pose_landmarks.landmark)}
+    with exercise_lock:
+        reps = coach.process_form(lm, time.time())
+        joints = []
+        for name, color in getattr(coach, 'joint_colors', {}).items():
+            if hasattr(mp_pose.PoseLandmark, name):
+                idx = getattr(mp_pose.PoseLandmark, name)
+                pt = results.pose_landmarks.landmark[idx]
+                joints.append({
+                    'name': name,
+                    'x': pt.x,
+                    'y': pt.y,
+                    'color': 'green' if color == (0, 255, 0) else 'red'
+                })
+        try:
+            span = coach.extended_target - coach.flexed_target
+            if span and span > 0:
+                norm_angle = np.clip(coach.current_angle, coach.flexed_target, coach.extended_target)
+                progress = 1.0 - (norm_angle - coach.flexed_target) / span
+                progress = float(np.clip(progress, 0.0, 1.0))
+            else:
+                progress = 0.5
+        except Exception:
+            progress = 0.5
+    return jsonify({
+        'reps': reps,
+        'feedback': coach.feedback,
+        'form_issue': coach.form_issue or '',
+        'joints': joints,
+        'progress': progress
+    })
 
 @app.route('/api/categories')
 def get_categories():

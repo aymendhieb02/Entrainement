@@ -94,7 +94,16 @@ Add **HEADLESS** = **1**. This skips OpenCV/MediaPipe so the app starts without 
 
 ---
 
-## 4. What runs on Railway
+## 4. What runs where
+
+**On your PC (camera + full analysis):** Run without HEADLESS. Camera and rep counting work as normal.
+```bash
+python main.py
+# Open http://127.0.0.1:5000
+```
+Do **not** set HEADLESS when running locally.
+
+**On Railway:** No camera in the cloud. HEADLESS=1 only so the app starts and shows the UI + placeholder.
 
 - The **Flask app** runs with **gunicorn** and listens on `$PORT`.
 - There is **no webcam** in the cloud, so the video feed shows a placeholder: *“Camera not available – run locally for live analysis.”*
