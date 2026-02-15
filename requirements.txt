@@ -3,8 +3,8 @@ flask==3.0.0
 flask-cors==4.0.0
 numpy==1.26.4
 Pillow>=10.0.0
-# 0.10.31+ removed solutions API; use 0.10.30 for mp.solutions.pose
-mediapipe==0.10.30
+# 0.10.31+ uses Tasks API (pose_landmarker); we use that and download .task at runtime
+mediapipe>=0.10.31
 absl-py>=1.4.0
 attrs>=25.4.0
 flatbuffers>=25.12.19
