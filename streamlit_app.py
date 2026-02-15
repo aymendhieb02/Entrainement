@@ -12,21 +12,23 @@ from biomechanics import (
 )
 
 # Try to load cv2 and mediapipe (use opencv-python-headless on Streamlit Cloud)
+# MediaPipe 0.10.31+ removed solutions API; requirements pin 0.10.30
 try:
     import cv2
     import numpy as np
     import mediapipe as mp
+    _ = mp.solutions.pose  # AttributeError if solutions was removed (0.10.31+)
     POSE_AVAILABLE = True
     mp_pose = mp.solutions.pose
     pose = mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5, model_complexity=0)
-except (ImportError, OSError) as e:
+except (ImportError, OSError, AttributeError) as e:
     POSE_AVAILABLE = False
     cv2 = np = mp = mp_pose = pose = None
-    st.warning(f"Pose analysis unavailable: {e}. Install opencv-python-headless and mediapipe.")
+    st.warning(f"Pose analysis unavailable: {e}. Use mediapipe==0.10.30 (0.10.31+ removed solutions).")
 
 st.set_page_config(page_title="Transformini Coach", layout="wide")
 st.title("Transformini Coach")
-st.caption("Real-time form feedback — capture a frame to analyze.")
+st.caption("Uses **your** camera (phone or PC) — capture a frame to get form feedback.")
 
 @st.cache_data
 def get_db():
@@ -73,7 +75,7 @@ if not POSE_AVAILABLE:
     st.stop()
 
 coach = st.session_state.coach
-img_bytes = st.camera_input("Capture a frame to analyze form")
+img_bytes = st.camera_input("Use your device camera — take a photo to analyze your form")
 
 if img_bytes and st.session_state.analysis_started:
     buf = img_bytes.getvalue()

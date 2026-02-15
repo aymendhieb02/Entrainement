@@ -14,8 +14,10 @@ Open http://localhost:8501
 1. Push this repo to **GitHub** (e.g. `main` branch).
 2. Go to [share.streamlit.io](https://share.streamlit.io) and sign in with GitHub.
 3. **New app** → select your repo and branch.
-4. **Main file path:** `streamlit_app.py`
+4. **Main file path:** set to **`streamlit_app.py`** (not `main.py`). Using `main.py` causes crashes (Flask + mediapipe).
 5. Deploy. Your app will be at: **transformini-training-feedback.streamlit.app**
+
+Each visitor uses **their own** camera (phone or PC) via the in-app camera button; the app does not use the server’s camera.
 
 ## Requirements
 
