@@ -1,12 +1,21 @@
-import cv2
 import json
-import numpy as np
-import mediapipe as mp
-from collections import deque
-import time
 import os
-import threading
 import re
+import time
+import threading
+from collections import deque
+
+# Railway/cloud: no webcam or libGL. Set HEADLESS=1 to skip cv2/mediapipe and use Pillow for placeholder.
+HEADLESS = os.environ.get("RAILWAY") or os.environ.get("HEADLESS") or os.environ.get("DISABLE_CAMERA")
+if HEADLESS:
+    cv2 = None
+    mp = None
+    import numpy as np
+else:
+    import cv2
+    import numpy as np
+    import mediapipe as mp
+
 from flask import Flask, Response, render_template, jsonify, request
 
 # --- CONFIGURATION ---
@@ -327,29 +336,46 @@ if not is_exercise_valid_for_ui(current_exercise_key):
 
 # Initialize coach with default exercise
 coach = BiomechanicsCoach(current_exercise_key, db)
-mp_pose = mp.solutions.pose
-# 0.5 confidence + lite model for easier full-body detection without stepping far back
-pose = mp_pose.Pose(
-    min_detection_confidence=0.5,
-    min_tracking_confidence=0.5,
-    model_complexity=0  # 0=lite (better for full body in frame)
-)
-mp_drawing = mp.solutions.drawing_utils
 
-# Global camera object (request 1280x720 so more of the scene is captured if supported)
-# On Railway/cloud there is no webcam; app still runs and shows a placeholder feed.
-camera = cv2.VideoCapture(CAMERA_INDEX)
-CAMERA_AVAILABLE = camera.isOpened()
-if CAMERA_AVAILABLE:
-    camera.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
-    camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
-    try:
-        camera.set(27, 0.5)  # CAP_PROP_ZOOM on some drivers
-    except Exception:
-        pass
+if HEADLESS:
+    camera = None
+    CAMERA_AVAILABLE = False
+    pose = None
+    mp_pose = None
+    mp_drawing = None
+else:
+    mp_pose = mp.solutions.pose
+    pose = mp_pose.Pose(
+        min_detection_confidence=0.5,
+        min_tracking_confidence=0.5,
+        model_complexity=0
+    )
+    mp_drawing = mp.solutions.drawing_utils
+    camera = cv2.VideoCapture(CAMERA_INDEX)
+    CAMERA_AVAILABLE = camera.isOpened()
+    if CAMERA_AVAILABLE:
+        camera.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+        camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+        try:
+            camera.set(27, 0.5)
+        except Exception:
+            pass
 
 def _placeholder_frame_bytes():
-    """Single JPEG frame for when camera is not available (e.g. Railway deploy)."""
+    """JPEG frame when camera is not available. Uses Pillow on Railway (no cv2)."""
+    if HEADLESS:
+        try:
+            from PIL import Image, ImageDraw
+            import io
+            img = Image.new("RGB", (640, 480), color=(30, 30, 40))
+            draw = ImageDraw.Draw(img)
+            draw.text((80, 220), "Camera not available", fill=(255, 255, 255))
+            draw.text((60, 270), "Run locally for live analysis", fill=(180, 180, 180))
+            buf = io.BytesIO()
+            img.save(buf, format="JPEG", quality=85)
+            return buf.getvalue()
+        except Exception:
+            return b""
     frame = np.zeros((480, 640, 3), dtype=np.uint8)
     frame[:] = (30, 30, 40)
     cv2.putText(frame, "Camera not available", (80, 220), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (255, 255, 255), 2)
@@ -618,6 +644,8 @@ if __name__ == '__main__':
     try:
         app.run(host='0.0.0.0', port=port, debug=False, threaded=True)
     finally:
-        if CAMERA_AVAILABLE:
-            camera.release()
-        pose.close()
+        if not HEADLESS:
+            if CAMERA_AVAILABLE and camera:
+                camera.release()
+            if pose:
+                pose.close()

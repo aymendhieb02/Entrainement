@@ -87,10 +87,10 @@ Use the same token as above when Git asks for a password.
 
 If the repo has multiple folders and the app is in a subfolder, set **Root Directory** in Railway to that folder (e.g. the folder that contains `main.py`, `Procfile`, `requirements.txt`). If everything is at the repo root, leave it empty.
 
-### 3.5 Environment variables (fix libGL crash)
+### 3.5 Environment variables (required on Railway)
 
 In Railway: **Variables** tab. You usually don’t need any for this app.  
-If the app crashes with libGL.so.1: add variable **RAILPACK_DEPLOY_APT_PACKAGES** = **libgl1**, then Redeploy. For .env vars, use the Variables tab.
+Add **HEADLESS** = **1**. This skips OpenCV/MediaPipe so the app starts without libGL. Video shows a placeholder; run locally for live camera analysis.
 
 ---
 
