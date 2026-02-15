@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+myenv/
+env/
+.venv/
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env / secrets (do not commit)
+.env
+.env.local
+*.pem
+
+# Optional: exclude large data if you don't want it in repo
+# complete_exercise_biomechanics_database.json

@@ -1,0 +1,3411 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "total_exercises": 527,
+    "last_updated": "2026-02-08",
+    "description": "Research-based biomechanical standards for exercise form validation",
+    "angle_units": "degrees",
+    "color_coding": {
+      "GREEN": "Within optimal range (tolerance)",
+      "YELLOW": "Acceptable but suboptimal (2x tolerance)",
+      "RED": "Poor form / potential injury risk"
+    }
+  },
+  "validation_logic": {
+    "primary_joint": {
+      "description": "For joints that move during the exercise",
+      "green": "flexed - tolerance <= angle <= extended + tolerance",
+      "yellow": "flexed - (2*tolerance) <= angle <= extended + (2*tolerance)",
+      "red": "Outside yellow range"
+    },
+    "stability_joint": {
+      "description": "For joints that should remain stable",
+      "green": "abs(angle - target) <= max_deviation * 0.5",
+      "yellow": "abs(angle - target) <= max_deviation",
+      "red": "abs(angle - target) > max_deviation"
+    }
+  },
+  "base_templates": {
+    "bicep_curl_base": {
+      "category": "Arms",
+      "subcategory": "Biceps",
+      "primary_joint": "elbow",
+      "primary_view": "side",
+      "views": {
+        "side": {
+          "elbow": {
+            "type": "primary",
+            "extended": 175,
+            "flexed": 35,
+            "optimal_tension": 90,
+            "tolerance": 15
+          },
+          "shoulder": {
+            "type": "stability",
+            "target": 20,
+            "max_deviation": 15
+          },
+          "hip": {
+            "type": "stability",
+            "target": 178,
+            "max_deviation": 10
+          }
+        },
+        "front": {
+          "elbow_symmetry": {
+            "type": "symmetry",
+            "max_difference": 10
+          },
+          "torso_lean": {
+            "type": "stability",
+            "max_angle": 10
+          }
+        }
+      },
+      "form_cues": [
+        "Elbows slightly in front of torso",
+        "No swinging or momentum",
+        "Wrists neutral",
+        "Control eccentric phase"
+      ]
+    },
+    "preacher_curl_base": {
+      "category": "Arms",
+      "subcategory": "Biceps",
+      "primary_joint": "elbow",
+      "primary_view": "side",
+      "views": {
+        "side": {
+          "elbow": {
+            "type": "primary",
+            "extended": 165,
+            "flexed": 35,
+            "tolerance": 10
+          },
+          "shoulder": {
+            "type": "stability",
+            "target": 45,
+            "max_deviation": 10
+          }
+        }
+      },
+      "form_cues": [
+        "Upper arm on pad",
+        "No shoulder lift",
+        "Stop before lockout"
+      ]
+    },
+    "tricep_extension_base": {
+      "category": "Arms",
+      "subcategory": "Triceps",
+      "primary_joint": "elbow",
+      "primary_view": "side",
+      "views": {
+        "side": {
+          "elbow": {
+            "type": "primary",
+            "extended": 175,
+            "flexed": 45,
+            "tolerance": 15
+          },
+          "shoulder": {
+            "type": "stability",
+            "target": 170,
+            "max_deviation": 10
+          }
+        }
+      },
+      "form_cues": [
+        "Upper arms vertical",
+        "Lower behind head",
+        "Full extension at top"
+      ]
+    },
+    "tricep_dip_base": {
+      "category": "Arms",
+      "subcategory": "Triceps",
+      "primary_joint": "elbow",
+      "primary_view": "side",
+      "views": {
+        "side": {
+          "elbow": {
+            "type": "primary",
+            "extended": 175,
+            "flexed": 90,
+            "min_depth": 80,
+            "tolerance": 10
+          },
+          "shoulder": {
+            "type": "stability",
+            "target": 30,
+            "max_deviation": 15
+          },
+          "torso_lean": {
+            "type": "controlled",
+            "target": 15,
+            "max": 30
+          }
+        }
+      },
+      "form_cues": [
+        "Slight forward lean (10-20\u00b0)",
+        "90\u00b0 elbow bend at bottom",
+        "Shoulders down"
+      ]
+    },
+    "tricep_pushdown_base": {
+      "category": "Arms",
+      "subcategory": "Triceps",
+      "primary_joint": "elbow",
+      "primary_view": "side",
+      "views": {
+        "side": {
+          "elbow": {
+            "type": "primary",
+            "flexed": 90,
+            "extended": 175,
+            "tolerance": 10
+          },
+          "shoulder": {
+            "type": "stability",
+            "target": 20,
+            "max_deviation": 10
+          }
+        }
+      },
+      "form_cues": [
+        "Upper arms pinned to sides",
+        "Full extension",
+        "No leaning"
+      ]
+    },
+    "close_grip_bench_base": {
+      "category": "Arms",
+      "subcategory": "Triceps",
+      "primary_joint": "elbow",
+      "primary_view": "side",
+      "views": {
+        "side": {
+          "elbow": {
+            "type": "primary",
+            "extended": 175,
+            "flexed": 80,
+            "tolerance": 10
+          },
+          "shoulder": {
+            "type": "controlled",
+            "flare_angle": 30,
+            "max_flare": 45
+          }
+        }
+      },
+      "form_cues": [
+        "Narrow grip",
+        "Elbows closer to body",
+        "Touch lower chest"
+      ]
+    },
+    "pullup_base": {
+      "category": "Back",
+      "subcategory": "Lats",
+      "primary_joint": "elbow",
+      "primary_view": "side",
+      "views": {
+        "side": {
+          "elbow": {
+            "type": "primary",
+            "extended": 175,
+            "flexed": 60,
+            "tolerance": 15
+          },
+          "shoulder": {
+            "type": "primary",
+            "extended": 180,
+            "flexed": 40,
+            "tolerance": 10
+          }
+        },
+        "front": {
+          "body_sway": {
+            "type": "stability",
+            "max_deviation": 15
+          }
+        }
+      },
+      "form_cues": [
+        "Full hang at bottom",
+        "Chin over bar",
+        "Minimize kipping"
+      ]
+    },
+    "row_base": {
+      "category": "Back",
+      "subcategory": "Mid-back",
+      "primary_joint": "elbow",
+      "primary_view": "side",
+      "views": {
+        "side": {
+          "elbow": {
+            "type": "primary",
+            "extended": 175,
+            "flexed": 40,
+            "tolerance": 15
+          },
+          "torso_angle": {
+            "type": "stability",
+            "target": 15,
+            "max_deviation": 10
+          },
+          "back": {
+            "type": "stability",
+            "target": 175,
+            "min_acceptable": 170
+          }
+        }
+      },
+      "form_cues": [
+        "Flat back",
+        "Pull to lower chest",
+        "Squeeze shoulder blades"
+      ]
+    },
+    "shrug_base": {
+      "category": "Back",
+      "subcategory": "Traps",
+      "primary_joint": "shoulder",
+      "primary_view": "side",
+      "views": {
+        "side": {
+          "shoulder_elevation": {
+            "type": "primary",
+            "down": 0,
+            "raised": 20,
+            "tolerance": 5
+          },
+          "elbow": {
+            "type": "stability",
+            "target": 175,
+            "max_deviation": 5
+          }
+        }
+      },
+      "form_cues": [
+        "Arms straight",
+        "Shoulders to ears",
+        "No rolling"
+      ]
+    },
+    "bench_press_base": {
+      "category": "Chest",
+      "subcategory": "Pectorals",
+      "primary_joint": "elbow",
+      "primary_view": "side",
+      "views": {
+        "side": {
+          "elbow": {
+            "type": "primary",
+            "extended": 175,
+            "flexed": 80,
+            "tolerance": 10
+          },
+          "shoulder": {
+            "type": "controlled",
+            "flare_angle": 60,
+            "max_flare": 80,
+            "min_flare": 30
+          },
+          "back_arch": {
+            "type": "controlled",
+            "natural": 170,
+            "max_arch": 160,
+            "flat": 178
+          }
+        },
+        "front": {
+          "elbow_symmetry": {
+            "type": "symmetry",
+            "max_difference": 10
+          }
+        }
+      },
+      "form_cues": [
+        "Bar to chest",
+        "45-75\u00b0 elbow flare",
+        "Feet planted"
+      ]
+    },
+    "pushup_base": {
+      "category": "Chest",
+      "subcategory": "Pectorals",
+      "primary_joint": "elbow",
+      "primary_view": "side",
+      "views": {
+        "side": {
+          "elbow": {
+            "type": "primary",
+            "extended": 175,
+            "flexed": 90,
+            "tolerance": 15
+          },
+          "body_alignment": {
+            "type": "stability",
+            "target": 180,
+            "max_deviation": 10
+          }
+        }
+      },
+      "form_cues": [
+        "Straight body line",
+        "Chest to ground",
+        "No sagging"
+      ]
+    },
+    "chest_fly_base": {
+      "category": "Chest",
+      "subcategory": "Pectorals",
+      "primary_joint": "shoulder",
+      "primary_view": "front",
+      "views": {
+        "front": {
+          "shoulder_horizontal_adduction": {
+            "type": "primary",
+            "wide": 90,
+            "contracted": 10,
+            "tolerance": 10
+          },
+          "elbow": {
+            "type": "stability",
+            "target": 165,
+            "max_deviation": 10
+          }
+        }
+      },
+      "form_cues": [
+        "Slight elbow bend",
+        "Arc motion",
+        "Squeeze at top"
+      ]
+    },
+    "shoulder_press_base": {
+      "category": "Shoulders",
+      "subcategory": "Deltoids",
+      "primary_joint": "elbow",
+      "primary_view": "side",
+      "views": {
+        "side": {
+          "elbow": {
+            "type": "primary",
+            "flexed": 90,
+            "extended": 175,
+            "tolerance": 10
+          },
+          "shoulder_flexion": {
+            "type": "primary",
+            "bottom": 90,
+            "overhead": 170,
+            "tolerance": 10
+          },
+          "back": {
+            "type": "stability",
+            "target": 175,
+            "max_deviation": 10
+          }
+        },
+        "front": {
+          "elbow_flare": {
+            "type": "controlled",
+            "optimal": 45,
+            "max": 70,
+            "min": 20
+          }
+        }
+      },
+      "form_cues": [
+        "Press in scapular plane (30-45\u00b0)",
+        "Full overhead extension",
+        "Neutral back"
+      ]
+    },
+    "lateral_raise_base": {
+      "category": "Shoulders",
+      "subcategory": "Deltoids",
+      "primary_joint": "shoulder",
+      "primary_view": "front",
+      "views": {
+        "front": {
+          "shoulder_abduction": {
+            "type": "primary",
+            "down": 10,
+            "raised": 90,
+            "max": 95,
+            "tolerance": 10
+          },
+          "elbow": {
+            "type": "stability",
+            "target": 165,
+            "max_deviation": 10
+          }
+        },
+        "side": {
+          "torso": {
+            "type": "stability",
+            "target": 178,
+            "max_deviation": 10
+          }
+        }
+      },
+      "form_cues": [
+        "Slight elbow bend",
+        "Raise to shoulder height",
+        "No swinging"
+      ]
+    },
+    "front_raise_base": {
+      "category": "Shoulders",
+      "subcategory": "Deltoids",
+      "primary_joint": "shoulder",
+      "primary_view": "side",
+      "views": {
+        "side": {
+          "shoulder_flexion": {
+            "type": "primary",
+            "down": 0,
+            "raised": 90,
+            "max": 100,
+            "tolerance": 10
+          },
+          "elbow": {
+            "type": "stability",
+            "target": 175,
+            "max_deviation": 10
+          }
+        }
+      },
+      "form_cues": [
+        "Arms straight",
+        "Raise to shoulder height",
+        "Control descent"
+      ]
+    },
+    "rear_delt_base": {
+      "category": "Shoulders",
+      "subcategory": "Rear Deltoids",
+      "primary_joint": "shoulder",
+      "primary_view": "front",
+      "views": {
+        "front": {
+          "shoulder_horizontal_abduction": {
+            "type": "primary",
+            "forward": 10,
+            "back": 90,
+            "tolerance": 10
+          },
+          "elbow": {
+            "type": "stability",
+            "target": 165,
+            "max_deviation": 10
+          }
+        },
+        "side": {
+          "torso": {
+            "type": "stability",
+            "target": 30,
+            "max_deviation": 15
+          }
+        }
+      },
+      "form_cues": [
+        "Bent over",
+        "Arc motion back",
+        "Squeeze shoulder blades"
+      ]
+    },
+    "upright_row_base": {
+      "category": "Shoulders",
+      "subcategory": "Deltoids/Traps",
+      "primary_joint": "elbow",
+      "primary_view": "side",
+      "views": {
+        "side": {
+          "elbow": {
+            "type": "primary",
+            "down": 175,
+            "raised": 90,
+            "tolerance": 10
+          },
+          "shoulder_elevation": {
+            "type": "primary",
+            "down": 0,
+            "raised": 15,
+            "tolerance": 5
+          }
+        }
+      },
+      "form_cues": [
+        "Pull to chest height",
+        "Elbows high",
+        "Close to body"
+      ]
+    },
+    "squat_base": {
+      "category": "Thighs",
+      "subcategory": "Quadriceps/Glutes",
+      "primary_joint": "knee",
+      "primary_view": "side",
+      "views": {
+        "side": {
+          "knee": {
+            "type": "primary",
+            "standing": 178,
+            "parallel": 90,
+            "deep": 60,
+            "min_acceptable": 100,
+            "tolerance": 10
+          },
+          "hip": {
+            "type": "primary",
+            "standing": 178,
+            "parallel": 85,
+            "deep": 65,
+            "tolerance": 10
+          },
+          "torso_angle": {
+            "type": "stability",
+            "upright": 10,
+            "low_bar": 25,
+            "max_lean": 45
+          },
+          "ankle": {
+            "type": "controlled",
+            "dorsiflexion": 30,
+            "min_required": 20
+          }
+        },
+        "front": {
+          "knee_tracking": {
+            "type": "stability",
+            "valgus_max": 5,
+            "varus_max": 5
+          }
+        }
+      },
+      "form_cues": [
+        "Depth: parallel or below",
+        "Knees track over toes",
+        "Chest up",
+        "Controlled descent"
+      ]
+    },
+    "lunge_base": {
+      "category": "Thighs",
+      "subcategory": "Quadriceps/Glutes",
+      "primary_joint": "knee",
+      "primary_view": "side",
+      "views": {
+        "side": {
+          "front_knee": {
+            "type": "primary",
+            "standing": 178,
+            "bottom": 90,
+            "min": 80,
+            "tolerance": 10
+          },
+          "back_knee": {
+            "type": "primary",
+            "bottom": 90,
+            "min_clearance": 5
+          },
+          "torso": {
+            "type": "stability",
+            "target": 180,
+            "max_deviation": 10
+          }
+        }
+      },
+      "form_cues": [
+        "Front thigh parallel",
+        "Back knee near ground",
+        "Upright torso"
+      ]
+    },
+    "leg_press_base": {
+      "category": "Thighs",
+      "subcategory": "Quadriceps",
+      "primary_joint": "knee",
+      "primary_view": "front",
+      "views": {
+        "front": {
+          "knee": {
+            "type": "primary",
+            "extended": 175,
+            "flexed": 90,
+            "deep": 80,
+            "tolerance": 10
+          },
+          "hip": {
+            "type": "primary",
+            "flexed": 90,
+            "tolerance": 10
+          }
+        }
+      },
+      "form_cues": [
+        "Don't lock knees",
+        "90\u00b0 depth minimum",
+        "Controlled tempo"
+      ]
+    },
+    "leg_extension_base": {
+      "category": "Thighs",
+      "subcategory": "Quadriceps",
+      "primary_joint": "knee",
+      "primary_view": "side",
+      "views": {
+        "side": {
+          "knee": {
+            "type": "primary",
+            "flexed": 90,
+            "extended": 175,
+            "tolerance": 10
+          },
+          "hip": {
+            "type": "stability",
+            "target": 90,
+            "max_deviation": 5
+          }
+        }
+      },
+      "form_cues": [
+        "Full extension",
+        "Squeeze at top",
+        "Control descent"
+      ]
+    },
+    "leg_curl_base": {
+      "category": "Thighs",
+      "subcategory": "Hamstrings",
+      "primary_joint": "knee",
+      "primary_view": "side",
+      "views": {
+        "side": {
+          "knee": {
+            "type": "primary",
+            "extended": 175,
+            "flexed": 40,
+            "tolerance": 10
+          },
+          "hip": {
+            "type": "stability",
+            "target": 180,
+            "max_deviation": 5
+          }
+        }
+      },
+      "form_cues": [
+        "Full curl",
+        "Hips down",
+        "Squeeze hamstrings"
+      ]
+    },
+    "deadlift_base": {
+      "category": "Thighs",
+      "subcategory": "Hamstrings/Glutes",
+      "primary_joint": "hip",
+      "primary_view": "side",
+      "views": {
+        "side": {
+          "hip": {
+            "type": "primary",
+            "bent": 50,
+            "lockout": 178,
+            "tolerance": 10
+          },
+          "knee": {
+            "type": "primary",
+            "bent": 75,
+            "lockout": 178,
+            "tolerance": 10
+          },
+          "back": {
+            "type": "stability",
+            "target": 175,
+            "min_acceptable": 170,
+            "CRITICAL": "NO ROUNDING"
+          }
+        }
+      },
+      "form_cues": [
+        "NEUTRAL SPINE (CRITICAL)",
+        "Bar close to legs",
+        "Push through heels",
+        "Hip hinge motion"
+      ]
+    },
+    "good_morning_base": {
+      "category": "Thighs",
+      "subcategory": "Hamstrings/Lower Back",
+      "primary_joint": "hip",
+      "primary_view": "side",
+      "views": {
+        "side": {
+          "hip": {
+            "type": "primary",
+            "standing": 178,
+            "bent": 45,
+            "tolerance": 10
+          },
+          "knee": {
+            "type": "stability",
+            "target": 175,
+            "max_deviation": 10
+          },
+          "back": {
+            "type": "stability",
+            "target": 175,
+            "min_acceptable": 170
+          }
+        }
+      },
+      "form_cues": [
+        "Neutral spine",
+        "Hip hinge",
+        "Slight knee bend"
+      ]
+    },
+    "calf_raise_base": {
+      "category": "Calves",
+      "subcategory": "Gastrocnemius/Soleus",
+      "primary_joint": "ankle",
+      "primary_view": "side",
+      "views": {
+        "side": {
+          "ankle": {
+            "type": "primary",
+            "plantar_flexion": 140,
+            "neutral": 90,
+            "dorsiflexion": 70,
+            "tolerance": 10
+          },
+          "knee": {
+            "type": "stability",
+            "standing_variation": 175,
+            "seated_variation": 90
+          }
+        }
+      },
+      "form_cues": [
+        "Full ROM",
+        "Squeeze at top",
+        "Stretch at bottom"
+      ]
+    },
+    "crunch_base": {
+      "category": "Waist",
+      "subcategory": "Abs",
+      "primary_joint": "spine",
+      "primary_view": "side",
+      "views": {
+        "side": {
+          "spine_flexion": {
+            "type": "primary",
+            "lying": 180,
+            "crunched": 120,
+            "situp": 90,
+            "tolerance": 15
+          },
+          "hip": {
+            "type": "stability",
+            "target": 90,
+            "max_deviation": 5
+          }
+        }
+      },
+      "form_cues": [
+        "Crunch ribs to hips",
+        "Don't pull neck",
+        "Exhale at top"
+      ]
+    },
+    "plank_base": {
+      "category": "Waist",
+      "subcategory": "Core",
+      "primary_joint": "none",
+      "primary_view": "side",
+      "views": {
+        "side": {
+          "body_alignment": {
+            "type": "stability",
+            "ideal": 180,
+            "min": 175,
+            "max": 185,
+            "sagging": 170,
+            "piking": 190
+          }
+        }
+      },
+      "form_cues": [
+        "Straight line",
+        "Core tight",
+        "No sagging/piking"
+      ]
+    },
+    "side_bend_base": {
+      "category": "Waist",
+      "subcategory": "Obliques",
+      "primary_joint": "spine",
+      "primary_view": "front",
+      "views": {
+        "front": {
+          "lateral_flexion": {
+            "type": "primary",
+            "neutral": 0,
+            "bent": 30,
+            "tolerance": 10
+          },
+          "hip": {
+            "type": "stability",
+            "target": 178,
+            "max_deviation": 5
+          }
+        }
+      },
+      "form_cues": [
+        "Bend to side only",
+        "No forward lean",
+        "Control motion"
+      ]
+    },
+    "twist_base": {
+      "category": "Waist",
+      "subcategory": "Obliques",
+      "primary_joint": "spine",
+      "primary_view": "top",
+      "views": {
+        "top": {
+          "rotation": {
+            "type": "primary",
+            "neutral": 0,
+            "rotated": 45,
+            "max": 60,
+            "tolerance": 10
+          }
+        }
+      },
+      "form_cues": [
+        "Rotate from core",
+        "Hips stable",
+        "Controlled tempo"
+      ]
+    }
+  },
+  "exercises": {
+    "ASTricepsDip": {
+      "full_name": "ASTricepsDip",
+      "category": "Arms",
+      "uses_template": "tricep_dip_base",
+      "file": "ASTricepsDip"
+    },
+    "ASTricepsDipFootBand": {
+      "full_name": "ASTricepsDipFootBand",
+      "category": "Arms",
+      "uses_template": "tricep_dip_base",
+      "file": "ASTricepsDipFootBand"
+    },
+    "ASTricepsDipKneeling": {
+      "full_name": "ASTricepsDipKneeling",
+      "category": "Arms",
+      "uses_template": "tricep_dip_base",
+      "file": "ASTricepsDipKneeling"
+    },
+    "ASTricepsDipSelf": {
+      "full_name": "ASTricepsDipSelf",
+      "category": "Arms",
+      "uses_template": "tricep_dip_base",
+      "file": "ASTricepsDipSelf"
+    },
+    "BBCloseGripBenchPress": {
+      "full_name": "BBCloseGripBenchPress",
+      "category": "Arms",
+      "uses_template": "close_grip_bench_base",
+      "file": "BBCloseGripBenchPress"
+    },
+    "BBCurl": {
+      "full_name": "BBCurl",
+      "category": "Arms",
+      "uses_template": "bicep_curl_base",
+      "file": "BBCurl"
+    },
+    "BBLyingTricepsExtension": {
+      "full_name": "BBLyingTricepsExtension",
+      "category": "Arms",
+      "uses_template": "tricep_extension_base",
+      "file": "BBLyingTricepsExtension"
+    },
+    "BBLyingTricepsExtensionSC": {
+      "full_name": "BBLyingTricepsExtensionSC",
+      "category": "Arms",
+      "uses_template": "tricep_extension_base",
+      "file": "BBLyingTricepsExtensionSC"
+    },
+    "BBPreacherCurl": {
+      "full_name": "BBPreacherCurl",
+      "category": "Arms",
+      "uses_template": "preacher_curl_base",
+      "file": "BBPreacherCurl"
+    },
+    "BBProneInclineCurl": {
+      "full_name": "BBProneInclineCurl",
+      "category": "Arms",
+      "uses_template": "preacher_curl_base",
+      "file": "BBProneInclineCurl"
+    },
+    "BBSeatedTricepsExtension": {
+      "full_name": "BBSeatedTricepsExtension",
+      "category": "Arms",
+      "uses_template": "tricep_extension_base",
+      "file": "BBSeatedTricepsExtension"
+    },
+    "BWBenchDipFloor": {
+      "full_name": "BWBenchDipFloor",
+      "category": "Arms",
+      "uses_template": "tricep_dip_base",
+      "file": "BWBenchDipFloor"
+    },
+    "BWBenchDipLegsElevated": {
+      "full_name": "BWBenchDipLegsElevated",
+      "category": "Arms",
+      "uses_template": "tricep_dip_base",
+      "file": "BWBenchDipLegsElevated"
+    },
+    "BWCloseGripInclinePushUpOnBar": {
+      "full_name": "BWCloseGripInclinePushUpOnBar",
+      "category": "Arms",
+      "uses_template": "pushup_base",
+      "file": "BWCloseGripInclinePushUpOnBar"
+    },
+    "BWCloseGripPush": {
+      "full_name": "BWCloseGripPush",
+      "category": "Arms",
+      "uses_template": "pushup_base",
+      "file": "BWCloseGripPush"
+    },
+    "BWCloseGripPushUpKnees": {
+      "full_name": "BWCloseGripPushUpKnees",
+      "category": "Arms",
+      "uses_template": "pushup_base",
+      "file": "BWCloseGripPushUpKnees"
+    },
+    "BWSupineRowUnderhand": {
+      "full_name": "BWSupineRowUnderhand",
+      "category": "Back",
+      "uses_template": "row_base",
+      "file": "BWSupineRowUnderhand"
+    },
+    "BWTricepsDip": {
+      "full_name": "BWTricepsDip",
+      "category": "Arms",
+      "uses_template": "tricep_dip_base",
+      "file": "BWTricepsDip"
+    },
+    "CBAlternatingCurl": {
+      "full_name": "CBAlternatingCurl",
+      "category": "Arms",
+      "uses_template": "bicep_curl_base",
+      "file": "CBAlternatingCurl"
+    },
+    "CBConcentrationCurl": {
+      "full_name": "CBConcentrationCurl",
+      "category": "Arms",
+      "uses_template": "bicep_curl_base",
+      "file": "CBConcentrationCurl"
+    },
+    "CBCurl": {
+      "full_name": "CBCurl",
+      "category": "Arms",
+      "uses_template": "bicep_curl_base",
+      "file": "CBCurl"
+    },
+    "CBCurlStirrups": {
+      "full_name": "CBCurlStirrups",
+      "category": "Arms",
+      "uses_template": "bicep_curl_base",
+      "file": "CBCurlStirrups"
+    },
+    "CBLyingTricepsExtension": {
+      "full_name": "CBLyingTricepsExtension",
+      "category": "Arms",
+      "uses_template": "tricep_extension_base",
+      "file": "CBLyingTricepsExtension"
+    },
+    "CBOneArmCurl": {
+      "full_name": "CBOneArmCurl",
+      "category": "Arms",
+      "uses_template": "bicep_curl_base",
+      "file": "CBOneArmCurl"
+    },
+    "CBPreacherCurl": {
+      "full_name": "CBPreacherCurl",
+      "category": "Arms",
+      "uses_template": "preacher_curl_base",
+      "file": "CBPreacherCurl"
+    },
+    "CBPreacherCurlStirrups": {
+      "full_name": "CBPreacherCurlStirrups",
+      "category": "Arms",
+      "uses_template": "preacher_curl_base",
+      "file": "CBPreacherCurlStirrups"
+    },
+    "CBSeatedTricepsExtension": {
+      "full_name": "CBSeatedTricepsExtension",
+      "category": "Arms",
+      "uses_template": "tricep_extension_base",
+      "file": "CBSeatedTricepsExtension"
+    },
+    "CBStandingTricepsExtensionBackSupport": {
+      "full_name": "CBStandingTricepsExtensionBackSupport",
+      "category": "Arms",
+      "uses_template": "tricep_extension_base",
+      "file": "CBStandingTricepsExtensionBackSupport"
+    },
+    "CBTricepsDip": {
+      "full_name": "CBTricepsDip",
+      "category": "Arms",
+      "uses_template": "tricep_dip_base",
+      "file": "CBTricepsDip"
+    },
+    "CBTricepsExtensionRope": {
+      "full_name": "CBTricepsExtensionRope",
+      "category": "Arms",
+      "uses_template": "tricep_extension_base",
+      "file": "CBTricepsExtensionRope"
+    },
+    "DBConcentrationCurl": {
+      "full_name": "DBConcentrationCurl",
+      "category": "Arms",
+      "uses_template": "bicep_curl_base",
+      "file": "DBConcentrationCurl"
+    },
+    "DBCurl": {
+      "full_name": "DBCurl",
+      "category": "Arms",
+      "uses_template": "bicep_curl_base",
+      "file": "DBCurl"
+    },
+    "DBKickback": {
+      "full_name": "DBKickback",
+      "category": "Arms",
+      "uses_template": "tricep_extension_base",
+      "file": "DBKickback"
+    },
+    "DBLyingTricepsExtension": {
+      "full_name": "DBLyingTricepsExtension",
+      "category": "Arms",
+      "uses_template": "tricep_extension_base",
+      "file": "DBLyingTricepsExtension"
+    },
+    "DBOneArmTricepsExtension": {
+      "full_name": "DBOneArmTricepsExtension",
+      "category": "Arms",
+      "uses_template": "tricep_extension_base",
+      "file": "DBOneArmTricepsExtension"
+    },
+    "DBPreacherCurl": {
+      "full_name": "DBPreacherCurl",
+      "category": "Arms",
+      "uses_template": "preacher_curl_base",
+      "file": "DBPreacherCurl"
+    },
+    "DBTricepsExtension": {
+      "full_name": "DBTricepsExtension",
+      "category": "Arms",
+      "uses_template": "tricep_extension_base",
+      "file": "DBTricepsExtension"
+    },
+    "LVCloseGripBenchPressH": {
+      "full_name": "LVCloseGripBenchPressH",
+      "category": "Arms",
+      "uses_template": "close_grip_bench_base",
+      "file": "LVCloseGripBenchPressH"
+    },
+    "LVHighPreacherCurlArmsHighPL": {
+      "full_name": "LVHighPreacherCurlArmsHighPL",
+      "category": "Arms",
+      "uses_template": "preacher_curl_base",
+      "file": "LVHighPreacherCurlArmsHighPL"
+    },
+    "LVHighPreacherCurlS": {
+      "full_name": "LVHighPreacherCurlS",
+      "category": "Arms",
+      "uses_template": "preacher_curl_base",
+      "file": "LVHighPreacherCurlS"
+    },
+    "LVTricepsDip": {
+      "full_name": "LVTricepsDip",
+      "category": "Arms",
+      "uses_template": "tricep_dip_base",
+      "file": "LVTricepsDip"
+    },
+    "LVTricepsDip2": {
+      "full_name": "LVTricepsDip2",
+      "category": "Arms",
+      "uses_template": "tricep_dip_base",
+      "file": "LVTricepsDip2"
+    },
+    "LVTricepsExtension": {
+      "full_name": "LVTricepsExtension",
+      "category": "Arms",
+      "uses_template": "tricep_extension_base",
+      "file": "LVTricepsExtension"
+    },
+    "SLStandingTricepsDip": {
+      "full_name": "SLStandingTricepsDip",
+      "category": "Arms",
+      "uses_template": "tricep_dip_base",
+      "file": "SLStandingTricepsDip"
+    },
+    "SMCloseGripBenchPress": {
+      "full_name": "SMCloseGripBenchPress",
+      "category": "Arms",
+      "uses_template": "close_grip_bench_base",
+      "file": "SMCloseGripBenchPress"
+    },
+    "STArmCurl": {
+      "full_name": "STArmCurl",
+      "category": "Arms",
+      "uses_template": "bicep_curl_base",
+      "file": "STArmCurl"
+    },
+    "STTricepsExtension": {
+      "full_name": "STTricepsExtension",
+      "category": "Arms",
+      "uses_template": "tricep_extension_base",
+      "file": "STTricepsExtension"
+    },
+    "WTBenchDip": {
+      "full_name": "WTBenchDip",
+      "category": "Arms",
+      "uses_template": "tricep_dip_base",
+      "file": "WTBenchDip"
+    },
+    "WtTricepsDip": {
+      "full_name": "WtTricepsDip",
+      "category": "Arms",
+      "uses_template": "tricep_dip_base",
+      "file": "WtTricepsDip"
+    },
+    "ASChinupFootBand": {
+      "full_name": "ASChinupFootBand",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "ASChinupFootBand"
+    },
+    "ASCloseGripPullUpKneeling": {
+      "full_name": "ASCloseGripPullUpKneeling",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "ASCloseGripPullUpKneeling"
+    },
+    "ASParallelGripPullupFootBand": {
+      "full_name": "ASParallelGripPullupFootBand",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "ASParallelGripPullupFootBand"
+    },
+    "ASPullUpKneelingOpen": {
+      "full_name": "ASPullUpKneelingOpen",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "ASPullUpKneelingOpen"
+    },
+    "ASUnderhandChinupKneeling": {
+      "full_name": "ASUnderhandChinupKneeling",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "ASUnderhandChinupKneeling"
+    },
+    "AsChinupPartner": {
+      "full_name": "AsChinupPartner",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "AsChinupPartner"
+    },
+    "AsPullup": {
+      "full_name": "AsPullup",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "AsPullup"
+    },
+    "AsUnderhandChinupPartner": {
+      "full_name": "AsUnderhandChinupPartner",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "AsUnderhandChinupPartner"
+    },
+    "BBBentOverRow": {
+      "full_name": "BBBentOverRow",
+      "category": "Back",
+      "uses_template": "row_base",
+      "file": "BBBentOverRow"
+    },
+    "BBShrug": {
+      "full_name": "BBShrug",
+      "category": "Back",
+      "uses_template": "shrug_base",
+      "file": "BBShrug"
+    },
+    "BBUnderhandBentOverRow": {
+      "full_name": "BBUnderhandBentOverRow",
+      "category": "Back",
+      "uses_template": "row_base",
+      "file": "BBUnderhandBentOverRow"
+    },
+    "BWBentKneeInvertedShrug": {
+      "full_name": "BWBentKneeInvertedShrug",
+      "category": "Back",
+      "uses_template": "shrug_base",
+      "file": "BWBentKneeInvertedShrug"
+    },
+    "BWChinupSelfAssistedFront": {
+      "full_name": "BWChinupSelfAssistedFront",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "BWChinupSelfAssistedFront"
+    },
+    "BWCloseGripPullup": {
+      "full_name": "BWCloseGripPullup",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "BWCloseGripPullup"
+    },
+    "BWInvertedShrugsRings": {
+      "full_name": "BWInvertedShrugsRings",
+      "category": "Back",
+      "uses_template": "shrug_base",
+      "file": "BWInvertedShrugsRings"
+    },
+    "BWSupineRow": {
+      "full_name": "BWSupineRow",
+      "category": "Back",
+      "uses_template": "row_base",
+      "file": "BWSupineRow"
+    },
+    "BWSupineRowFeetElevated": {
+      "full_name": "BWSupineRowFeetElevated",
+      "category": "Back",
+      "uses_template": "row_base",
+      "file": "BWSupineRowFeetElevated"
+    },
+    "BWSupineRowHigh": {
+      "full_name": "BWSupineRowHigh",
+      "category": "Back",
+      "uses_template": "row_base",
+      "file": "BWSupineRowHigh"
+    },
+    "BWSupineRowUnderhandHigh": {
+      "full_name": "BWSupineRowUnderhandHigh",
+      "category": "Back",
+      "uses_template": "row_base",
+      "file": "BWSupineRowUnderhandHigh"
+    },
+    "BWUnderHandChinupSelfAssistedFront": {
+      "full_name": "BWUnderHandChinupSelfAssistedFront",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "BWUnderHandChinupSelfAssistedFront"
+    },
+    "BWUnderhandChinup": {
+      "full_name": "BWUnderhandChinup",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "BWUnderhandChinup"
+    },
+    "BWWideGripChinup": {
+      "full_name": "BWWideGripChinup",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "BWWideGripChinup"
+    },
+    "CBChinup": {
+      "full_name": "CBChinup",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "CBChinup"
+    },
+    "CBCloseGripPulldown": {
+      "full_name": "CBCloseGripPulldown",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "CBCloseGripPulldown"
+    },
+    "CBFrontPulldown": {
+      "full_name": "CBFrontPulldown",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "CBFrontPulldown"
+    },
+    "CBOneArmBentOverRow": {
+      "full_name": "CBOneArmBentOverRow",
+      "category": "Back",
+      "uses_template": "row_base",
+      "file": "CBOneArmBentOverRow"
+    },
+    "CBOneArmStrBackHighRow": {
+      "full_name": "CBOneArmStrBackHighRow",
+      "category": "Back",
+      "uses_template": "row_base",
+      "file": "CBOneArmStrBackHighRow"
+    },
+    "CBParallelCloseGripPullup": {
+      "full_name": "CBParallelCloseGripPullup",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "CBParallelCloseGripPullup"
+    },
+    "CBParallelGripPulldown": {
+      "full_name": "CBParallelGripPulldown",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "CBParallelGripPulldown"
+    },
+    "CBPullup": {
+      "full_name": "CBPullup",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "CBPullup"
+    },
+    "CBSeatedRow": {
+      "full_name": "CBSeatedRow",
+      "category": "Waist",
+      "uses_template": "row_base",
+      "file": "CBSeatedRow"
+    },
+    "CBSeatedRowStraightBack": {
+      "full_name": "CBSeatedRowStraightBack",
+      "category": "Back",
+      "uses_template": "row_base",
+      "file": "CBSeatedRowStraightBack"
+    },
+    "CBSeatedRowWideGripStrBack": {
+      "full_name": "CBSeatedRowWideGripStrBack",
+      "category": "Back",
+      "uses_template": "row_base",
+      "file": "CBSeatedRowWideGripStrBack"
+    },
+    "CBShrug": {
+      "full_name": "CBShrug",
+      "category": "Back",
+      "uses_template": "shrug_base",
+      "file": "CBShrug"
+    },
+    "CBShrugStirrups": {
+      "full_name": "CBShrugStirrups",
+      "category": "Back",
+      "uses_template": "shrug_base",
+      "file": "CBShrugStirrups"
+    },
+    "CBStraightArmPullDown": {
+      "full_name": "CBStraightArmPullDown",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "CBStraightArmPullDown"
+    },
+    "CBUnderhandPulldown": {
+      "full_name": "CBUnderhandPulldown",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "CBUnderhandPulldown"
+    },
+    "CBWideGripSeatedRow": {
+      "full_name": "CBWideGripSeatedRow",
+      "category": "Waist",
+      "uses_template": "row_base",
+      "file": "CBWideGripSeatedRow"
+    },
+    "DBBentoverRow": {
+      "full_name": "DBBentoverRow",
+      "category": "Back",
+      "uses_template": "row_base",
+      "file": "DBBentoverRow"
+    },
+    "DBLyingRow": {
+      "full_name": "DBLyingRow",
+      "category": "Back",
+      "uses_template": "row_base",
+      "file": "DBLyingRow"
+    },
+    "DBShrug": {
+      "full_name": "DBShrug",
+      "category": "Back",
+      "uses_template": "shrug_base",
+      "file": "DBShrug"
+    },
+    "LVCloseGripPulldown": {
+      "full_name": "LVCloseGripPulldown",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "LVCloseGripPulldown"
+    },
+    "LVFrontPulldown": {
+      "full_name": "LVFrontPulldown",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "LVFrontPulldown"
+    },
+    "LVPullDown": {
+      "full_name": "LVPullDown",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "LVPullDown"
+    },
+    "LVPulldownH": {
+      "full_name": "LVPulldownH",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "LVPulldownH"
+    },
+    "LVPullup": {
+      "full_name": "LVPullup",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "LVPullup"
+    },
+    "LVSeatedHighRowH": {
+      "full_name": "LVSeatedHighRowH",
+      "category": "Back",
+      "uses_template": "row_base",
+      "file": "LVSeatedHighRowH"
+    },
+    "LVSeatedLowRowH": {
+      "full_name": "LVSeatedLowRowH",
+      "category": "Back",
+      "uses_template": "row_base",
+      "file": "LVSeatedLowRowH"
+    },
+    "LVSeatedRow": {
+      "full_name": "LVSeatedRow",
+      "category": "Back",
+      "uses_template": "row_base",
+      "file": "LVSeatedRow"
+    },
+    "LVSeatedRowLowNarrowH": {
+      "full_name": "LVSeatedRowLowNarrowH",
+      "category": "Back",
+      "uses_template": "row_base",
+      "file": "LVSeatedRowLowNarrowH"
+    },
+    "LVSeatedRowNoPad": {
+      "full_name": "LVSeatedRowNoPad",
+      "category": "Back",
+      "uses_template": "row_base",
+      "file": "LVSeatedRowNoPad"
+    },
+    "LVSeatedRowWideH": {
+      "full_name": "LVSeatedRowWideH",
+      "category": "Back",
+      "uses_template": "row_base",
+      "file": "LVSeatedRowWideH"
+    },
+    "LVSeatedShrugH": {
+      "full_name": "LVSeatedShrugH",
+      "category": "Back",
+      "uses_template": "shrug_base",
+      "file": "LVSeatedShrugH"
+    },
+    "LVShrug": {
+      "full_name": "LVShrug",
+      "category": "Back",
+      "uses_template": "shrug_base",
+      "file": "LVShrug"
+    },
+    "LVShrugH": {
+      "full_name": "LVShrugH",
+      "category": "Back",
+      "uses_template": "shrug_base",
+      "file": "LVShrugH"
+    },
+    "LVStraightBackSeatedRowNoPad": {
+      "full_name": "LVStraightBackSeatedRowNoPad",
+      "category": "Back",
+      "uses_template": "row_base",
+      "file": "LVStraightBackSeatedRowNoPad"
+    },
+    "LVUnderhandPulldownH": {
+      "full_name": "LVUnderhandPulldownH",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "LVUnderhandPulldownH"
+    },
+    "LVUnderhandSeatedRow": {
+      "full_name": "LVUnderhandSeatedRow",
+      "category": "Back",
+      "uses_template": "row_base",
+      "file": "LVUnderhandSeatedRow"
+    },
+    "LVWideGripSeatedRow": {
+      "full_name": "LVWideGripSeatedRow",
+      "category": "Back",
+      "uses_template": "row_base",
+      "file": "LVWideGripSeatedRow"
+    },
+    "LVWideGripSeatedRowH": {
+      "full_name": "LVWideGripSeatedRowH",
+      "category": "Back",
+      "uses_template": "row_base",
+      "file": "LVWideGripSeatedRowH"
+    },
+    "LVWideGripTBarRowPL": {
+      "full_name": "LVWideGripTBarRowPL",
+      "category": "Back",
+      "uses_template": "row_base",
+      "file": "LVWideGripTBarRowPL"
+    },
+    "SLGriplessShrug": {
+      "full_name": "SLGriplessShrug",
+      "category": "Back",
+      "uses_template": "shrug_base",
+      "file": "SLGriplessShrug"
+    },
+    "SMBentoverRow": {
+      "full_name": "SMBentoverRow",
+      "category": "Back",
+      "uses_template": "row_base",
+      "file": "SMBentoverRow"
+    },
+    "SMShrug": {
+      "full_name": "SMShrug",
+      "category": "Back",
+      "uses_template": "shrug_base",
+      "file": "SMShrug"
+    },
+    "STInvertedRow": {
+      "full_name": "STInvertedRow",
+      "category": "Back",
+      "uses_template": "row_base",
+      "file": "STInvertedRow"
+    },
+    "STPullup": {
+      "full_name": "STPullup",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "STPullup"
+    },
+    "STRow": {
+      "full_name": "STRow",
+      "category": "Back",
+      "uses_template": "row_base",
+      "file": "STRow"
+    },
+    "STSelfAssistedPullup": {
+      "full_name": "STSelfAssistedPullup",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "STSelfAssistedPullup"
+    },
+    "TBShrug": {
+      "full_name": "TBShrug",
+      "category": "Back",
+      "uses_template": "shrug_base",
+      "file": "TBShrug"
+    },
+    "WTChinUp": {
+      "full_name": "WTChinUp",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "WTChinUp"
+    },
+    "WTChinUpUnderhand": {
+      "full_name": "WTChinUpUnderhand",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "WTChinUpUnderhand"
+    },
+    "WTCloseGripChinup": {
+      "full_name": "WTCloseGripChinup",
+      "category": "Back",
+      "uses_template": "pullup_base",
+      "file": "WTCloseGripChinup"
+    },
+    "WTInvertedRowFeetElevated": {
+      "full_name": "WTInvertedRowFeetElevated",
+      "category": "Back",
+      "uses_template": "row_base",
+      "file": "WTInvertedRowFeetElevated"
+    },
+    "ASSingleLegCalfRaiseSelfPull": {
+      "full_name": "ASSingleLegCalfRaiseSelfPull",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "ASSingleLegCalfRaiseSelfPull"
+    },
+    "BBStandingCalfRaise": {
+      "full_name": "BBStandingCalfRaise",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "BBStandingCalfRaise"
+    },
+    "BWCalfRaise": {
+      "full_name": "BWCalfRaise",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "BWCalfRaise"
+    },
+    "BWSingleLegCalfRaise": {
+      "full_name": "BWSingleLegCalfRaise",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "BWSingleLegCalfRaise"
+    },
+    "BWSingleLegReverseCalfRaise": {
+      "full_name": "BWSingleLegReverseCalfRaise",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "BWSingleLegReverseCalfRaise"
+    },
+    "CBReverseCalfRaise": {
+      "full_name": "CBReverseCalfRaise",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "CBReverseCalfRaise"
+    },
+    "CBSingleLegCalfRaiseStirrup": {
+      "full_name": "CBSingleLegCalfRaiseStirrup",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "CBSingleLegCalfRaiseStirrup"
+    },
+    "CBSingleLegReverseCalfRaise1": {
+      "full_name": "CBSingleLegReverseCalfRaise1",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "CBSingleLegReverseCalfRaise1"
+    },
+    "CBStandingCalfRaise": {
+      "full_name": "CBStandingCalfRaise",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "CBStandingCalfRaise"
+    },
+    "DBCalfRaise": {
+      "full_name": "DBCalfRaise",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "DBCalfRaise"
+    },
+    "DBReverseCalfRaise": {
+      "full_name": "DBReverseCalfRaise",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "DBReverseCalfRaise"
+    },
+    "DBSingleLegCalfRaise": {
+      "full_name": "DBSingleLegCalfRaise",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "DBSingleLegCalfRaise"
+    },
+    "DBSingleLegReverseCalfRaise": {
+      "full_name": "DBSingleLegReverseCalfRaise",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "DBSingleLegReverseCalfRaise"
+    },
+    "LV45DegCalfPress": {
+      "full_name": "LV45DegCalfPress",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "LV45DegCalfPress"
+    },
+    "LV45DegReverseCalfPress": {
+      "full_name": "LV45DegReverseCalfPress",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "LV45DegReverseCalfPress"
+    },
+    "LV45DegreeCalfRaise": {
+      "full_name": "LV45DegreeCalfRaise",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "LV45DegreeCalfRaise"
+    },
+    "LV45ReverseCalfRaise": {
+      "full_name": "LV45ReverseCalfRaise",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "LV45ReverseCalfRaise"
+    },
+    "LVDonkeyCalfRaise": {
+      "full_name": "LVDonkeyCalfRaise",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "LVDonkeyCalfRaise"
+    },
+    "LVReverseCalfExtension": {
+      "full_name": "LVReverseCalfExtension",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "LVReverseCalfExtension"
+    },
+    "LVReverseCalfRaise": {
+      "full_name": "LVReverseCalfRaise",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "LVReverseCalfRaise"
+    },
+    "LVReverseCalfRaisePL": {
+      "full_name": "LVReverseCalfRaisePL",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "LVReverseCalfRaisePL"
+    },
+    "LVSeatedCalfExtension": {
+      "full_name": "LVSeatedCalfExtension",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "LVSeatedCalfExtension"
+    },
+    "LVSeatedCalfExtensionH": {
+      "full_name": "LVSeatedCalfExtensionH",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "LVSeatedCalfExtensionH"
+    },
+    "LVSeatedCalfPress": {
+      "full_name": "LVSeatedCalfPress",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "LVSeatedCalfPress"
+    },
+    "LVSeatedCalfPressH": {
+      "full_name": "LVSeatedCalfPressH",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "LVSeatedCalfPressH"
+    },
+    "LVSeatedCalfRaise": {
+      "full_name": "LVSeatedCalfRaise",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "LVSeatedCalfRaise"
+    },
+    "LVSeatedCalfRaiseH": {
+      "full_name": "LVSeatedCalfRaiseH",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "LVSeatedCalfRaiseH"
+    },
+    "LVSeatedReverseCalfExtensionH": {
+      "full_name": "LVSeatedReverseCalfExtensionH",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "LVSeatedReverseCalfExtensionH"
+    },
+    "LVStandingCalfRaise": {
+      "full_name": "LVStandingCalfRaise",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "LVStandingCalfRaise"
+    },
+    "LVStandingCalfRaisePL": {
+      "full_name": "LVStandingCalfRaisePL",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "LVStandingCalfRaisePL"
+    },
+    "SBReverseCalfRaise": {
+      "full_name": "SBReverseCalfRaise",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "SBReverseCalfRaise"
+    },
+    "SBSeatedCalfRaise": {
+      "full_name": "SBSeatedCalfRaise",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "SBSeatedCalfRaise"
+    },
+    "SL45DegCalfPress": {
+      "full_name": "SL45DegCalfPress",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "SL45DegCalfPress"
+    },
+    "SL45DegReverseCalfPress": {
+      "full_name": "SL45DegReverseCalfPress",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "SL45DegReverseCalfPress"
+    },
+    "SL45DegReverseCalfRaise": {
+      "full_name": "SL45DegReverseCalfRaise",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "SL45DegReverseCalfRaise"
+    },
+    "SL45DegreeCalfRaise": {
+      "full_name": "SL45DegreeCalfRaise",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "SL45DegreeCalfRaise"
+    },
+    "SL45ReverseCalfRaiseHackPressPL": {
+      "full_name": "SL45ReverseCalfRaiseHackPressPL",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "SL45ReverseCalfRaiseHackPressPL"
+    },
+    "SLDonkeyCalfRaise": {
+      "full_name": "SLDonkeyCalfRaise",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "SLDonkeyCalfRaise"
+    },
+    "SLHackReverseCalfRaise": {
+      "full_name": "SLHackReverseCalfRaise",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "SLHackReverseCalfRaise"
+    },
+    "SLLyingCalfPress": {
+      "full_name": "SLLyingCalfPress",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "SLLyingCalfPress"
+    },
+    "SLLyingReverseCalfPress": {
+      "full_name": "SLLyingReverseCalfPress",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "SLLyingReverseCalfPress"
+    },
+    "SLStandingCalfRaise": {
+      "full_name": "SLStandingCalfRaise",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "SLStandingCalfRaise"
+    },
+    "SMReverseCalfRaise": {
+      "full_name": "SMReverseCalfRaise",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "SMReverseCalfRaise"
+    },
+    "SMSeatedCalfRaise": {
+      "full_name": "SMSeatedCalfRaise",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "SMSeatedCalfRaise"
+    },
+    "SMStandCalfRaise": {
+      "full_name": "SMStandCalfRaise",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "SMStandCalfRaise"
+    },
+    "WTSingleLegCalfRaise": {
+      "full_name": "WTSingleLegCalfRaise",
+      "category": "Calves",
+      "uses_template": "calf_raise_base",
+      "file": "WTSingleLegCalfRaise"
+    },
+    "ASChestDipFootBand": {
+      "full_name": "ASChestDipFootBand",
+      "category": "Chest",
+      "uses_template": "tricep_dip_base",
+      "file": "ASChestDipFootBand"
+    },
+    "ASChestDipKneeling": {
+      "full_name": "ASChestDipKneeling",
+      "category": "Chest",
+      "uses_template": "tricep_dip_base",
+      "file": "ASChestDipKneeling"
+    },
+    "ASChestDipSelfAssisted": {
+      "full_name": "ASChestDipSelfAssisted",
+      "category": "Chest",
+      "uses_template": "tricep_dip_base",
+      "file": "ASChestDipSelfAssisted"
+    },
+    "AsChestDip": {
+      "full_name": "AsChestDip",
+      "category": "Chest",
+      "uses_template": "tricep_dip_base",
+      "file": "AsChestDip"
+    },
+    "BBBenchPress": {
+      "full_name": "BBBenchPress",
+      "category": "Chest",
+      "uses_template": "bench_press_base",
+      "file": "BBBenchPress"
+    },
+    "BBBenchPressPowerlift": {
+      "full_name": "BBBenchPressPowerlift",
+      "category": "Chest",
+      "uses_template": "bench_press_base",
+      "file": "BBBenchPressPowerlift"
+    },
+    "BBDeclineBenchPress": {
+      "full_name": "BBDeclineBenchPress",
+      "category": "Chest",
+      "uses_template": "bench_press_base",
+      "file": "BBDeclineBenchPress"
+    },
+    "BWChestDip": {
+      "full_name": "BWChestDip",
+      "category": "Chest",
+      "uses_template": "tricep_dip_base",
+      "file": "BWChestDip"
+    },
+    "BWDeclinePushup": {
+      "full_name": "BWDeclinePushup",
+      "category": "Chest",
+      "uses_template": "pushup_base",
+      "file": "BWDeclinePushup"
+    },
+    "BWPushUpPlus": {
+      "full_name": "BWPushUpPlus",
+      "category": "Chest",
+      "uses_template": "pushup_base",
+      "file": "BWPushUpPlus"
+    },
+    "BWPushupOnBox": {
+      "full_name": "BWPushupOnBox",
+      "category": "Chest",
+      "uses_template": "pushup_base",
+      "file": "BWPushupOnBox"
+    },
+    "BWPushupWide": {
+      "full_name": "BWPushupWide",
+      "category": "Chest",
+      "uses_template": "pushup_base",
+      "file": "BWPushupWide"
+    },
+    "BWPushupWideKnee": {
+      "full_name": "BWPushupWideKnee",
+      "category": "Chest",
+      "uses_template": "pushup_base",
+      "file": "BWPushupWideKnee"
+    },
+    "CBBenchPress": {
+      "full_name": "CBBenchPress",
+      "category": "Chest",
+      "uses_template": "bench_press_base",
+      "file": "CBBenchPress"
+    },
+    "CBInclineBenchPress": {
+      "full_name": "CBInclineBenchPress",
+      "category": "Chest",
+      "uses_template": "bench_press_base",
+      "file": "CBInclineBenchPress"
+    },
+    "CBInclineFly": {
+      "full_name": "CBInclineFly",
+      "category": "Chest",
+      "uses_template": "chest_fly_base",
+      "file": "CBInclineFly"
+    },
+    "CBLyingFly": {
+      "full_name": "CBLyingFly",
+      "category": "Chest",
+      "uses_template": "chest_fly_base",
+      "file": "CBLyingFly"
+    },
+    "CBSeatedFly": {
+      "full_name": "CBSeatedFly",
+      "category": "Chest",
+      "uses_template": "chest_fly_base",
+      "file": "CBSeatedFly"
+    },
+    "CBStandingFly": {
+      "full_name": "CBStandingFly",
+      "category": "Chest",
+      "uses_template": "chest_fly_base",
+      "file": "CBStandingFly"
+    },
+    "DBBenchPress": {
+      "full_name": "DBBenchPress",
+      "category": "Chest",
+      "uses_template": "bench_press_base",
+      "file": "DBBenchPress"
+    },
+    "DBDeclineBenchPress": {
+      "full_name": "DBDeclineBenchPress",
+      "category": "Chest",
+      "uses_template": "bench_press_base",
+      "file": "DBDeclineBenchPress"
+    },
+    "DBFly": {
+      "full_name": "DBFly",
+      "category": "Chest",
+      "uses_template": "chest_fly_base",
+      "file": "DBFly"
+    },
+    "DBInclineBenchPress": {
+      "full_name": "DBInclineBenchPress",
+      "category": "Chest",
+      "uses_template": "bench_press_base",
+      "file": "DBInclineBenchPress"
+    },
+    "DBInclineFly": {
+      "full_name": "DBInclineFly",
+      "category": "Chest",
+      "uses_template": "chest_fly_base",
+      "file": "DBInclineFly"
+    },
+    "DeclinePushUpOnBall": {
+      "full_name": "DeclinePushUpOnBall",
+      "category": "Chest",
+      "uses_template": "pushup_base",
+      "file": "DeclinePushUpOnBall"
+    },
+    "LVBenchPress": {
+      "full_name": "LVBenchPress",
+      "category": "Chest",
+      "uses_template": "bench_press_base",
+      "file": "LVBenchPress"
+    },
+    "LVBenchPressH": {
+      "full_name": "LVBenchPressH",
+      "category": "Chest",
+      "uses_template": "bench_press_base",
+      "file": "LVBenchPressH"
+    },
+    "LVChestDip": {
+      "full_name": "LVChestDip",
+      "category": "Chest",
+      "uses_template": "tricep_dip_base",
+      "file": "LVChestDip"
+    },
+    "LVChestDipH": {
+      "full_name": "LVChestDipH",
+      "category": "Chest",
+      "uses_template": "tricep_dip_base",
+      "file": "LVChestDipH"
+    },
+    "LVFly": {
+      "full_name": "LVFly",
+      "category": "Chest",
+      "uses_template": "chest_fly_base",
+      "file": "LVFly"
+    },
+    "LVInclineBenchPress": {
+      "full_name": "LVInclineBenchPress",
+      "category": "Chest",
+      "uses_template": "bench_press_base",
+      "file": "LVInclineBenchPress"
+    },
+    "LVInclineChestPressOnHammerMilitaryPress": {
+      "full_name": "LVInclineChestPressOnHammerMilitaryPress",
+      "category": "Chest",
+      "uses_template": "shoulder_press_base",
+      "file": "LVInclineChestPressOnHammerMilitaryPress"
+    },
+    "LVInclineFly": {
+      "full_name": "LVInclineFly",
+      "category": "Chest",
+      "uses_template": "chest_fly_base",
+      "file": "LVInclineFly"
+    },
+    "LVLyingFly": {
+      "full_name": "LVLyingFly",
+      "category": "Chest",
+      "uses_template": "chest_fly_base",
+      "file": "LVLyingFly"
+    },
+    "LVSeatedFly": {
+      "full_name": "LVSeatedFly",
+      "category": "Chest",
+      "uses_template": "chest_fly_base",
+      "file": "LVSeatedFly"
+    },
+    "SLStandingChestDip": {
+      "full_name": "SLStandingChestDip",
+      "category": "Chest",
+      "uses_template": "tricep_dip_base",
+      "file": "SLStandingChestDip"
+    },
+    "SMBenchPress": {
+      "full_name": "SMBenchPress",
+      "category": "Chest",
+      "uses_template": "bench_press_base",
+      "file": "SMBenchPress"
+    },
+    "SMDeclineBenchPress": {
+      "full_name": "SMDeclineBenchPress",
+      "category": "Chest",
+      "uses_template": "bench_press_base",
+      "file": "SMDeclineBenchPress"
+    },
+    "STInclinePushup": {
+      "full_name": "STInclinePushup",
+      "category": "Chest",
+      "uses_template": "pushup_base",
+      "file": "STInclinePushup"
+    },
+    "WTBenchPress": {
+      "full_name": "WTBenchPress",
+      "category": "Chest",
+      "uses_template": "bench_press_base",
+      "file": "WTBenchPress"
+    },
+    "WtChestDip": {
+      "full_name": "WtChestDip",
+      "category": "Chest",
+      "uses_template": "tricep_dip_base",
+      "file": "WtChestDip"
+    },
+    "BBMilitaryPress": {
+      "full_name": "BBMilitaryPress",
+      "category": "Shoulders",
+      "uses_template": "shoulder_press_base",
+      "file": "BBMilitaryPress"
+    },
+    "BBSeatedMilitaryPressFF": {
+      "full_name": "BBSeatedMilitaryPressFF",
+      "category": "Shoulders",
+      "uses_template": "shoulder_press_base",
+      "file": "BBSeatedMilitaryPressFF"
+    },
+    "BBUprightRowM": {
+      "full_name": "BBUprightRowM",
+      "category": "Shoulders",
+      "uses_template": "upright_row_base",
+      "file": "BBUprightRowM"
+    },
+    "BWRearDeltInvertedHips": {
+      "full_name": "BWRearDeltInvertedHips",
+      "category": "Shoulders",
+      "uses_template": "rear_delt_base",
+      "file": "BWRearDeltInvertedHips"
+    },
+    "BWRearDeltInvertedRowHigh": {
+      "full_name": "BWRearDeltInvertedRowHigh",
+      "category": "Shoulders",
+      "uses_template": "row_base",
+      "file": "BWRearDeltInvertedRowHigh"
+    },
+    "CBAlternatingFrontLateralRaise": {
+      "full_name": "CBAlternatingFrontLateralRaise",
+      "category": "Shoulders",
+      "uses_template": "lateral_raise_base",
+      "file": "CBAlternatingFrontLateralRaise"
+    },
+    "CBFrontLateralRaise": {
+      "full_name": "CBFrontLateralRaise",
+      "category": "Shoulders",
+      "uses_template": "lateral_raise_base",
+      "file": "CBFrontLateralRaise"
+    },
+    "CBFrontRaise": {
+      "full_name": "CBFrontRaise",
+      "category": "Shoulders",
+      "uses_template": "front_raise_base",
+      "file": "CBFrontRaise"
+    },
+    "CBLateralRaise": {
+      "full_name": "CBLateralRaise",
+      "category": "Shoulders",
+      "uses_template": "lateral_raise_base",
+      "file": "CBLateralRaise"
+    },
+    "CBOneArmUprightRow": {
+      "full_name": "CBOneArmUprightRow",
+      "category": "Shoulders",
+      "uses_template": "upright_row_base",
+      "file": "CBOneArmUprightRow"
+    },
+    "CBRearDeltRow": {
+      "full_name": "CBRearDeltRow",
+      "category": "Shoulders",
+      "uses_template": "row_base",
+      "file": "CBRearDeltRow"
+    },
+    "CBSeatedFrontRaise": {
+      "full_name": "CBSeatedFrontRaise",
+      "category": "Shoulders",
+      "uses_template": "front_raise_base",
+      "file": "CBSeatedFrontRaise"
+    },
+    "CBStandingRearDeltFly": {
+      "full_name": "CBStandingRearDeltFly",
+      "category": "Shoulders",
+      "uses_template": "chest_fly_base",
+      "file": "CBStandingRearDeltFly"
+    },
+    "CBStandingRearDeltRow": {
+      "full_name": "CBStandingRearDeltRow",
+      "category": "Shoulders",
+      "uses_template": "row_base",
+      "file": "CBStandingRearDeltRow"
+    },
+    "CBStandingRearDeltRowRope": {
+      "full_name": "CBStandingRearDeltRowRope",
+      "category": "Shoulders",
+      "uses_template": "row_base",
+      "file": "CBStandingRearDeltRowRope"
+    },
+    "CBStandingShoulderPress": {
+      "full_name": "CBStandingShoulderPress",
+      "category": "Shoulders",
+      "uses_template": "shoulder_press_base",
+      "file": "CBStandingShoulderPress"
+    },
+    "CBUprightRow": {
+      "full_name": "CBUprightRow",
+      "category": "Shoulders",
+      "uses_template": "upright_row_base",
+      "file": "CBUprightRow"
+    },
+    "CBUprightRowRope": {
+      "full_name": "CBUprightRowRope",
+      "category": "Shoulders",
+      "uses_template": "upright_row_base",
+      "file": "CBUprightRowRope"
+    },
+    "CableBentOverLateralRaise": {
+      "full_name": "CableBentOverLateralRaise",
+      "category": "Shoulders",
+      "uses_template": "lateral_raise_base",
+      "file": "CableBentOverLateralRaise"
+    },
+    "DBAlternatingFrontRaise": {
+      "full_name": "DBAlternatingFrontRaise",
+      "category": "Shoulders",
+      "uses_template": "front_raise_base",
+      "file": "DBAlternatingFrontRaise"
+    },
+    "DBArnoldPress": {
+      "full_name": "DBArnoldPress",
+      "category": "Shoulders",
+      "uses_template": "shoulder_press_base",
+      "file": "DBArnoldPress"
+    },
+    "DBFrontLateralRaise": {
+      "full_name": "DBFrontLateralRaise",
+      "category": "Shoulders",
+      "uses_template": "lateral_raise_base",
+      "file": "DBFrontLateralRaise"
+    },
+    "DBFrontRaise": {
+      "full_name": "DBFrontRaise",
+      "category": "Shoulders",
+      "uses_template": "front_raise_base",
+      "file": "DBFrontRaise"
+    },
+    "DBFullCanLateralRaise": {
+      "full_name": "DBFullCanLateralRaise",
+      "category": "Shoulders",
+      "uses_template": "lateral_raise_base",
+      "file": "DBFullCanLateralRaise"
+    },
+    "DBInclineLateralRaise": {
+      "full_name": "DBInclineLateralRaise",
+      "category": "Shoulders",
+      "uses_template": "lateral_raise_base",
+      "file": "DBInclineLateralRaise"
+    },
+    "DBLateralRaise": {
+      "full_name": "DBLateralRaise",
+      "category": "Shoulders",
+      "uses_template": "lateral_raise_base",
+      "file": "DBLateralRaise"
+    },
+    "DBLyingLateralRaise": {
+      "full_name": "DBLyingLateralRaise",
+      "category": "Shoulders",
+      "uses_template": "lateral_raise_base",
+      "file": "DBLyingLateralRaise"
+    },
+    "DBOneArmShoulderPressLean": {
+      "full_name": "DBOneArmShoulderPressLean",
+      "category": "Shoulders",
+      "uses_template": "shoulder_press_base",
+      "file": "DBOneArmShoulderPressLean"
+    },
+    "DBOneArmUprightRow": {
+      "full_name": "DBOneArmUprightRow",
+      "category": "Shoulders",
+      "uses_template": "upright_row_base",
+      "file": "DBOneArmUprightRow"
+    },
+    "DBRearDeltRow": {
+      "full_name": "DBRearDeltRow",
+      "category": "Shoulders",
+      "uses_template": "row_base",
+      "file": "DBRearDeltRow"
+    },
+    "DBRearLateralRaise": {
+      "full_name": "DBRearLateralRaise",
+      "category": "Shoulders",
+      "uses_template": "lateral_raise_base",
+      "file": "DBRearLateralRaise"
+    },
+    "DBSeatedRearLateralRaise": {
+      "full_name": "DBSeatedRearLateralRaise",
+      "category": "Shoulders",
+      "uses_template": "lateral_raise_base",
+      "file": "DBSeatedRearLateralRaise"
+    },
+    "DBShoulderPress": {
+      "full_name": "DBShoulderPress",
+      "category": "Shoulders",
+      "uses_template": "shoulder_press_base",
+      "file": "DBShoulderPress"
+    },
+    "DBUprightRow": {
+      "full_name": "DBUprightRow",
+      "category": "Shoulders",
+      "uses_template": "upright_row_base",
+      "file": "DBUprightRow"
+    },
+    "LVLateralRaise": {
+      "full_name": "LVLateralRaise",
+      "category": "Shoulders",
+      "uses_template": "lateral_raise_base",
+      "file": "LVLateralRaise"
+    },
+    "LVLateralRaise2": {
+      "full_name": "LVLateralRaise2",
+      "category": "Shoulders",
+      "uses_template": "lateral_raise_base",
+      "file": "LVLateralRaise2"
+    },
+    "LVLateralRaiseH": {
+      "full_name": "LVLateralRaiseH",
+      "category": "Shoulders",
+      "uses_template": "lateral_raise_base",
+      "file": "LVLateralRaiseH"
+    },
+    "LVLyingRearDeltRaiseH": {
+      "full_name": "LVLyingRearDeltRaiseH",
+      "category": "Shoulders",
+      "uses_template": "rear_delt_base",
+      "file": "LVLyingRearDeltRaiseH"
+    },
+    "LVLyingRearLateralRaise": {
+      "full_name": "LVLyingRearLateralRaise",
+      "category": "Shoulders",
+      "uses_template": "lateral_raise_base",
+      "file": "LVLyingRearLateralRaise"
+    },
+    "LVMilitaryInclinePressH": {
+      "full_name": "LVMilitaryInclinePressH",
+      "category": "Shoulders",
+      "uses_template": "shoulder_press_base",
+      "file": "LVMilitaryInclinePressH"
+    },
+    "LVRearDeltRowH": {
+      "full_name": "LVRearDeltRowH",
+      "category": "Shoulders",
+      "uses_template": "row_base",
+      "file": "LVRearDeltRowH"
+    },
+    "LVReclinedShoulderPressPL": {
+      "full_name": "LVReclinedShoulderPressPL",
+      "category": "Shoulders",
+      "uses_template": "shoulder_press_base",
+      "file": "LVReclinedShoulderPressPL"
+    },
+    "LVReclinedShoulderPressParGrip": {
+      "full_name": "LVReclinedShoulderPressParGrip",
+      "category": "Shoulders",
+      "uses_template": "shoulder_press_base",
+      "file": "LVReclinedShoulderPressParGrip"
+    },
+    "LVSeatedRearDeltFlyInsideParallelGrip": {
+      "full_name": "LVSeatedRearDeltFlyInsideParallelGrip",
+      "category": "Shoulders",
+      "uses_template": "chest_fly_base",
+      "file": "LVSeatedRearDeltFlyInsideParallelGrip"
+    },
+    "LVSeatedRearDeltRow": {
+      "full_name": "LVSeatedRearDeltRow",
+      "category": "Shoulders",
+      "uses_template": "row_base",
+      "file": "LVSeatedRearDeltRow"
+    },
+    "LVSeatedReverseFlyParallelGrip": {
+      "full_name": "LVSeatedReverseFlyParallelGrip",
+      "category": "Shoulders",
+      "uses_template": "chest_fly_base",
+      "file": "LVSeatedReverseFlyParallelGrip"
+    },
+    "LVShoulderPress": {
+      "full_name": "LVShoulderPress",
+      "category": "Shoulders",
+      "uses_template": "shoulder_press_base",
+      "file": "LVShoulderPress"
+    },
+    "LVShoulderPressH": {
+      "full_name": "LVShoulderPressH",
+      "category": "Shoulders",
+      "uses_template": "shoulder_press_base",
+      "file": "LVShoulderPressH"
+    },
+    "SLShoulderPress": {
+      "full_name": "SLShoulderPress",
+      "category": "Shoulders",
+      "uses_template": "shoulder_press_base",
+      "file": "SLShoulderPress"
+    },
+    "SMBentoverRearDeltRowSideView": {
+      "full_name": "SMBentoverRearDeltRowSideView",
+      "category": "Shoulders",
+      "uses_template": "row_base",
+      "file": "SMBentoverRearDeltRowSideView"
+    },
+    "SMShoulderPress": {
+      "full_name": "SMShoulderPress",
+      "category": "Shoulders",
+      "uses_template": "shoulder_press_base",
+      "file": "SMShoulderPress"
+    },
+    "SMUprightRow": {
+      "full_name": "SMUprightRow",
+      "category": "Shoulders",
+      "uses_template": "upright_row_base",
+      "file": "SMUprightRow"
+    },
+    "STFrontRaise": {
+      "full_name": "STFrontRaise",
+      "category": "Shoulders",
+      "uses_template": "front_raise_base",
+      "file": "STFrontRaise"
+    },
+    "STRearDeltRow": {
+      "full_name": "STRearDeltRow",
+      "category": "Shoulders",
+      "uses_template": "row_base",
+      "file": "STRearDeltRow"
+    },
+    "STReverseFlyStaggered": {
+      "full_name": "STReverseFlyStaggered",
+      "category": "Shoulders",
+      "uses_template": "chest_fly_base",
+      "file": "STReverseFlyStaggered"
+    },
+    "ASStepDownSelf": {
+      "full_name": "ASStepDownSelf",
+      "category": "Thighs",
+      "uses_template": "lunge_base",
+      "file": "ASStepDownSelf"
+    },
+    "BBFrontSquat": {
+      "full_name": "BBFrontSquat",
+      "category": "Thighs",
+      "uses_template": "squat_base",
+      "file": "BBFrontSquat"
+    },
+    "BBGoodMorning": {
+      "full_name": "BBGoodMorning",
+      "category": "Thighs",
+      "uses_template": "good_morning_base",
+      "file": "BBGoodMorning"
+    },
+    "BBHyperExtention": {
+      "full_name": "BBHyperExtention",
+      "category": "Waist",
+      "uses_template": "deadlift_base",
+      "file": "BBHyperExtention"
+    },
+    "BBHyperextension": {
+      "full_name": "BBHyperextension",
+      "category": "Waist",
+      "uses_template": "deadlift_base",
+      "file": "BBHyperextension"
+    },
+    "BBLungeQuad": {
+      "full_name": "BBLungeQuad",
+      "category": "Thighs",
+      "uses_template": "lunge_base",
+      "file": "BBLungeQuad"
+    },
+    "BBRearLunge": {
+      "full_name": "BBRearLunge",
+      "category": "Thighs",
+      "uses_template": "lunge_base",
+      "file": "BBRearLunge"
+    },
+    "BBSingleLegSplitSquat": {
+      "full_name": "BBSingleLegSplitSquat",
+      "category": "Thighs",
+      "uses_template": "squat_base",
+      "file": "BBSingleLegSplitSquat"
+    },
+    "BBSingleLegSquat": {
+      "full_name": "BBSingleLegSquat",
+      "category": "Thighs",
+      "uses_template": "squat_base",
+      "file": "BBSingleLegSquat"
+    },
+    "BBSplitSquat": {
+      "full_name": "BBSplitSquat",
+      "category": "Thighs",
+      "uses_template": "squat_base",
+      "file": "BBSplitSquat"
+    },
+    "BBSquatHigh": {
+      "full_name": "BBSquatHigh",
+      "category": "Thighs",
+      "uses_template": "squat_base",
+      "file": "BBSquatHigh"
+    },
+    "BBStepUp": {
+      "full_name": "BBStepUp",
+      "category": "Thighs",
+      "uses_template": "lunge_base",
+      "file": "BBStepUp"
+    },
+    "BBStraightBackStraightLegDeadlift": {
+      "full_name": "BBStraightBackStraightLegDeadlift",
+      "category": "Thighs",
+      "uses_template": "deadlift_base",
+      "file": "BBStraightBackStraightLegDeadlift"
+    },
+    "BBStraightLegDeadlift": {
+      "full_name": "BBStraightLegDeadlift",
+      "category": "Waist",
+      "uses_template": "deadlift_base",
+      "file": "BBStraightLegDeadlift"
+    },
+    "BWBallLegCurl": {
+      "full_name": "BWBallLegCurl",
+      "category": "Thighs",
+      "uses_template": "leg_curl_base",
+      "file": "BWBallLegCurl"
+    },
+    "BWLunge": {
+      "full_name": "BWLunge",
+      "category": "Thighs",
+      "uses_template": "lunge_base",
+      "file": "BWLunge"
+    },
+    "BWSingleLegSplitSquat": {
+      "full_name": "BWSingleLegSplitSquat",
+      "category": "Thighs",
+      "uses_template": "squat_base",
+      "file": "BWSingleLegSplitSquat"
+    },
+    "BWSingleLegSquatPistol_": {
+      "full_name": "BWSingleLegSquatPistol_",
+      "category": "Thighs",
+      "uses_template": "squat_base",
+      "file": "BWSingleLegSquatPistol_"
+    },
+    "BWSingleLegSquatSelfAssistLeg": {
+      "full_name": "BWSingleLegSquatSelfAssistLeg",
+      "category": "Thighs",
+      "uses_template": "squat_base",
+      "file": "BWSingleLegSquatSelfAssistLeg"
+    },
+    "BWSplitSquat": {
+      "full_name": "BWSplitSquat",
+      "category": "Thighs",
+      "uses_template": "squat_base",
+      "file": "BWSplitSquat"
+    },
+    "BWSquat": {
+      "full_name": "BWSquat",
+      "category": "Thighs",
+      "uses_template": "squat_base",
+      "file": "BWSquat"
+    },
+    "BWStepDown": {
+      "full_name": "BWStepDown",
+      "category": "Thighs",
+      "uses_template": "lunge_base",
+      "file": "BWStepDown"
+    },
+    "BWStepUp": {
+      "full_name": "BWStepUp",
+      "category": "Thighs",
+      "uses_template": "lunge_base",
+      "file": "BWStepUp"
+    },
+    "CBLungeQuad": {
+      "full_name": "CBLungeQuad",
+      "category": "Thighs",
+      "uses_template": "lunge_base",
+      "file": "CBLungeQuad"
+    },
+    "CBLyingLegCurl": {
+      "full_name": "CBLyingLegCurl",
+      "category": "Thighs",
+      "uses_template": "leg_curl_base",
+      "file": "CBLyingLegCurl"
+    },
+    "CBRearLunge": {
+      "full_name": "CBRearLunge",
+      "category": "Thighs",
+      "uses_template": "lunge_base",
+      "file": "CBRearLunge"
+    },
+    "CBSquat": {
+      "full_name": "CBSquat",
+      "category": "Thighs",
+      "uses_template": "squat_base",
+      "file": "CBSquat"
+    },
+    "CBStandingLegCurl": {
+      "full_name": "CBStandingLegCurl",
+      "category": "Thighs",
+      "uses_template": "leg_curl_base",
+      "file": "CBStandingLegCurl"
+    },
+    "CBStraightBackStraightLegDeadlift": {
+      "full_name": "CBStraightBackStraightLegDeadlift",
+      "category": "Thighs",
+      "uses_template": "deadlift_base",
+      "file": "CBStraightBackStraightLegDeadlift"
+    },
+    "DBFrontSquat": {
+      "full_name": "DBFrontSquat",
+      "category": "Thighs",
+      "uses_template": "squat_base",
+      "file": "DBFrontSquat"
+    },
+    "DBLungeQuad": {
+      "full_name": "DBLungeQuad",
+      "category": "Thighs",
+      "uses_template": "lunge_base",
+      "file": "DBLungeQuad"
+    },
+    "DBRearLunge": {
+      "full_name": "DBRearLunge",
+      "category": "Thighs",
+      "uses_template": "lunge_base",
+      "file": "DBRearLunge"
+    },
+    "DBSplitSquat": {
+      "full_name": "DBSplitSquat",
+      "category": "Thighs",
+      "uses_template": "squat_base",
+      "file": "DBSplitSquat"
+    },
+    "DBSquat": {
+      "full_name": "DBSquat",
+      "category": "Thighs",
+      "uses_template": "squat_base",
+      "file": "DBSquat"
+    },
+    "DBStepDown": {
+      "full_name": "DBStepDown",
+      "category": "Thighs",
+      "uses_template": "lunge_base",
+      "file": "DBStepDown"
+    },
+    "DBStepUp": {
+      "full_name": "DBStepUp",
+      "category": "Thighs",
+      "uses_template": "lunge_base",
+      "file": "DBStepUp"
+    },
+    "DBStraightBackStraightLegDeadlift": {
+      "full_name": "DBStraightBackStraightLegDeadlift",
+      "category": "Thighs",
+      "uses_template": "deadlift_base",
+      "file": "DBStraightBackStraightLegDeadlift"
+    },
+    "KBDoubleArmFrontSquat": {
+      "full_name": "KBDoubleArmFrontSquat",
+      "category": "Thighs",
+      "uses_template": "squat_base",
+      "file": "KBDoubleArmFrontSquat"
+    },
+    "LV45DegLegPress": {
+      "full_name": "LV45DegLegPress",
+      "category": "Thighs",
+      "uses_template": "leg_press_base",
+      "file": "LV45DegLegPress"
+    },
+    "LVBentOverLegCurl": {
+      "full_name": "LVBentOverLegCurl",
+      "category": "Thighs",
+      "uses_template": "leg_curl_base",
+      "file": "LVBentOverLegCurl"
+    },
+    "LVKneelingLegCurl": {
+      "full_name": "LVKneelingLegCurl",
+      "category": "Thighs",
+      "uses_template": "leg_curl_base",
+      "file": "LVKneelingLegCurl"
+    },
+    "LVKneelingLegCurlH": {
+      "full_name": "LVKneelingLegCurlH",
+      "category": "Thighs",
+      "uses_template": "leg_curl_base",
+      "file": "LVKneelingLegCurlH"
+    },
+    "LVLegExtension": {
+      "full_name": "LVLegExtension",
+      "category": "Thighs",
+      "uses_template": "leg_extension_base",
+      "file": "LVLegExtension"
+    },
+    "LVLyingLegCurl": {
+      "full_name": "LVLyingLegCurl",
+      "category": "Thighs",
+      "uses_template": "leg_curl_base",
+      "file": "LVLyingLegCurl"
+    },
+    "LVLyingLegCurlH": {
+      "full_name": "LVLyingLegCurlH",
+      "category": "Thighs",
+      "uses_template": "leg_curl_base",
+      "file": "LVLyingLegCurlH"
+    },
+    "LVLyingLegPressH": {
+      "full_name": "LVLyingLegPressH",
+      "category": "Thighs",
+      "uses_template": "leg_press_base",
+      "file": "LVLyingLegPressH"
+    },
+    "LVSMSquatQuad": {
+      "full_name": "LVSMSquatQuad",
+      "category": "Thighs",
+      "uses_template": "squat_base",
+      "file": "LVSMSquatQuad"
+    },
+    "LVSeatedLegCurl": {
+      "full_name": "LVSeatedLegCurl",
+      "category": "Thighs",
+      "uses_template": "leg_curl_base",
+      "file": "LVSeatedLegCurl"
+    },
+    "LVSeatedLegCurlH": {
+      "full_name": "LVSeatedLegCurlH",
+      "category": "Thighs",
+      "uses_template": "leg_curl_base",
+      "file": "LVSeatedLegCurlH"
+    },
+    "LVSeatedLegPress": {
+      "full_name": "LVSeatedLegPress",
+      "category": "Thighs",
+      "uses_template": "leg_press_base",
+      "file": "LVSeatedLegPress"
+    },
+    "LVSeatedLegPressQuadH": {
+      "full_name": "LVSeatedLegPressQuadH",
+      "category": "Thighs",
+      "uses_template": "leg_press_base",
+      "file": "LVSeatedLegPressQuadH"
+    },
+    "LVSingleLegSquat": {
+      "full_name": "LVSingleLegSquat",
+      "category": "Thighs",
+      "uses_template": "squat_base",
+      "file": "LVSingleLegSquat"
+    },
+    "LVSplitSquat": {
+      "full_name": "LVSplitSquat",
+      "category": "Thighs",
+      "uses_template": "squat_base",
+      "file": "LVSplitSquat"
+    },
+    "LVSquatQuad": {
+      "full_name": "LVSquatQuad",
+      "category": "Thighs",
+      "uses_template": "squat_base",
+      "file": "LVSquatQuad"
+    },
+    "LVSquatQuadPL": {
+      "full_name": "LVSquatQuadPL",
+      "category": "Thighs",
+      "uses_template": "squat_base",
+      "file": "LVSquatQuadPL"
+    },
+    "LVStandingLegCurl": {
+      "full_name": "LVStandingLegCurl",
+      "category": "Thighs",
+      "uses_template": "leg_curl_base",
+      "file": "LVStandingLegCurl"
+    },
+    "LVStraightBackStraightLegDeadlift": {
+      "full_name": "LVStraightBackStraightLegDeadlift",
+      "category": "Thighs",
+      "uses_template": "deadlift_base",
+      "file": "LVStraightBackStraightLegDeadlift"
+    },
+    "LVVSquatQuad": {
+      "full_name": "LVVSquatQuad",
+      "category": "Thighs",
+      "uses_template": "squat_base",
+      "file": "LVVSquatQuad"
+    },
+    "SL45DegLegPressQuad": {
+      "full_name": "SL45DegLegPressQuad",
+      "category": "Thighs",
+      "uses_template": "leg_press_base",
+      "file": "SL45DegLegPressQuad"
+    },
+    "SLHackSquatQuad": {
+      "full_name": "SLHackSquatQuad",
+      "category": "Thighs",
+      "uses_template": "squat_base",
+      "file": "SLHackSquatQuad"
+    },
+    "SLLyingLegPressQuad": {
+      "full_name": "SLLyingLegPressQuad",
+      "category": "Thighs",
+      "uses_template": "leg_press_base",
+      "file": "SLLyingLegPressQuad"
+    },
+    "SLSquat": {
+      "full_name": "SLSquat",
+      "category": "Thighs",
+      "uses_template": "squat_base",
+      "file": "SLSquat"
+    },
+    "SMGoodmorning": {
+      "full_name": "SMGoodmorning",
+      "category": "Thighs",
+      "uses_template": "good_morning_base",
+      "file": "SMGoodmorning"
+    },
+    "SMRearLunge": {
+      "full_name": "SMRearLunge",
+      "category": "Thighs",
+      "uses_template": "lunge_base",
+      "file": "SMRearLunge"
+    },
+    "SMSquatQuad": {
+      "full_name": "SMSquatQuad",
+      "category": "Thighs",
+      "uses_template": "squat_base",
+      "file": "SMSquatQuad"
+    },
+    "SMStrtBackStrtLegDeadlift": {
+      "full_name": "SMStrtBackStrtLegDeadlift",
+      "category": "Thighs",
+      "uses_template": "deadlift_base",
+      "file": "SMStrtBackStrtLegDeadlift"
+    },
+    "STHamstringCurl": {
+      "full_name": "STHamstringCurl",
+      "category": "Thighs",
+      "uses_template": "bicep_curl_base",
+      "file": "STHamstringCurl"
+    },
+    "STHangingLegCurl": {
+      "full_name": "STHangingLegCurl",
+      "category": "Thighs",
+      "uses_template": "leg_curl_base",
+      "file": "STHangingLegCurl"
+    },
+    "STHangingStraightHipLegCurl": {
+      "full_name": "STHangingStraightHipLegCurl",
+      "category": "Thighs",
+      "uses_template": "leg_curl_base",
+      "file": "STHangingStraightHipLegCurl"
+    },
+    "STPistolSquat": {
+      "full_name": "STPistolSquat",
+      "category": "Thighs",
+      "uses_template": "squat_base",
+      "file": "STPistolSquat"
+    },
+    "STSideBend": {
+      "full_name": "STSideBend",
+      "category": "Waist",
+      "uses_template": "side_bend_base",
+      "file": "STSideBend"
+    },
+    "STSplitSquat": {
+      "full_name": "STSplitSquat",
+      "category": "Thighs",
+      "uses_template": "squat_base",
+      "file": "STSplitSquat"
+    },
+    "TBSquat": {
+      "full_name": "TBSquat",
+      "category": "Thighs",
+      "uses_template": "squat_base",
+      "file": "TBSquat"
+    },
+    "WTHyperExtension3": {
+      "full_name": "WTHyperExtension3",
+      "category": "Waist",
+      "uses_template": "deadlift_base",
+      "file": "WTHyperExtension3"
+    },
+    "WTPistolSquatFarLeg": {
+      "full_name": "WTPistolSquatFarLeg",
+      "category": "Thighs",
+      "uses_template": "squat_base",
+      "file": "WTPistolSquatFarLeg"
+    },
+    "WtHyperExtension": {
+      "full_name": "WtHyperExtension",
+      "category": "Waist",
+      "uses_template": "deadlift_base",
+      "file": "WtHyperExtension"
+    },
+    "BBBentKneeGoodMorning": {
+      "full_name": "BBBentKneeGoodMorning",
+      "category": "Waist",
+      "uses_template": "good_morning_base",
+      "file": "BBBentKneeGoodMorning"
+    },
+    "BBDeadlift": {
+      "full_name": "BBDeadlift",
+      "category": "Waist",
+      "uses_template": "deadlift_base",
+      "file": "BBDeadlift"
+    },
+    "BBPushCrunch": {
+      "full_name": "BBPushCrunch",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "BBPushCrunch"
+    },
+    "BBStiffLegDeadlift": {
+      "full_name": "BBStiffLegDeadlift",
+      "category": "Waist",
+      "uses_template": "deadlift_base",
+      "file": "BBStiffLegDeadlift"
+    },
+    "BWAlternatingBirdDog": {
+      "full_name": "BWAlternatingBirdDog",
+      "category": "Waist",
+      "uses_template": "plank_base",
+      "file": "BWAlternatingBirdDog"
+    },
+    "BWBallCrunch": {
+      "full_name": "BWBallCrunch",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "BWBallCrunch"
+    },
+    "BWBirdDog": {
+      "full_name": "BWBirdDog",
+      "category": "Waist",
+      "uses_template": "plank_base",
+      "file": "BWBirdDog"
+    },
+    "BWCrunchBallX": {
+      "full_name": "BWCrunchBallX",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "BWCrunchBallX"
+    },
+    "BWCrunchHead": {
+      "full_name": "BWCrunchHead",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "BWCrunchHead"
+    },
+    "BWCrunchX": {
+      "full_name": "BWCrunchX",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "BWCrunchX"
+    },
+    "BWHyperextensionBall": {
+      "full_name": "BWHyperextensionBall",
+      "category": "Waist",
+      "uses_template": "deadlift_base",
+      "file": "BWHyperextensionBall"
+    },
+    "BWInclineCrunchDown": {
+      "full_name": "BWInclineCrunchDown",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "BWInclineCrunchDown"
+    },
+    "BWInclineCrunchHead": {
+      "full_name": "BWInclineCrunchHead",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "BWInclineCrunchHead"
+    },
+    "BWInclineSitupX": {
+      "full_name": "BWInclineSitupX",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "BWInclineSitupX"
+    },
+    "BWInclineSitups": {
+      "full_name": "BWInclineSitups",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "BWInclineSitups"
+    },
+    "BWInclineTwistingCrunchChest": {
+      "full_name": "BWInclineTwistingCrunchChest",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "BWInclineTwistingCrunchChest"
+    },
+    "BWInclineTwistingCrunchNeck": {
+      "full_name": "BWInclineTwistingCrunchNeck",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "BWInclineTwistingCrunchNeck"
+    },
+    "BWInclineTwistingSitupChest": {
+      "full_name": "BWInclineTwistingSitupChest",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "BWInclineTwistingSitupChest"
+    },
+    "BWSitupArmsSides": {
+      "full_name": "BWSitupArmsSides",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "BWSitupArmsSides"
+    },
+    "BWSitupNeck": {
+      "full_name": "BWSitupNeck",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "BWSitupNeck"
+    },
+    "BWSitupShoulder": {
+      "full_name": "BWSitupShoulder",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "BWSitupShoulder"
+    },
+    "BWTwistingCrunchBallHead": {
+      "full_name": "BWTwistingCrunchBallHead",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "BWTwistingCrunchBallHead"
+    },
+    "BWTwistingCrunchChest": {
+      "full_name": "BWTwistingCrunchChest",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "BWTwistingCrunchChest"
+    },
+    "BWTwistingCrunchHead": {
+      "full_name": "BWTwistingCrunchHead",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "BWTwistingCrunchHead"
+    },
+    "BWTwistingSitupNeck": {
+      "full_name": "BWTwistingSitupNeck",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "BWTwistingSitupNeck"
+    },
+    "BWTwistingSitupShoulders": {
+      "full_name": "BWTwistingSitupShoulders",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "BWTwistingSitupShoulders"
+    },
+    "BWTwistingSitupsNeck": {
+      "full_name": "BWTwistingSitupsNeck",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "BWTwistingSitupsNeck"
+    },
+    "CBKneelingCrunch": {
+      "full_name": "CBKneelingCrunch",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "CBKneelingCrunch"
+    },
+    "CBSeatedCrunch": {
+      "full_name": "CBSeatedCrunch",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "CBSeatedCrunch"
+    },
+    "CBSeatedTwistB": {
+      "full_name": "CBSeatedTwistB",
+      "category": "Waist",
+      "uses_template": "twist_base",
+      "file": "CBSeatedTwistB"
+    },
+    "CBSideBend": {
+      "full_name": "CBSideBend",
+      "category": "Waist",
+      "uses_template": "side_bend_base",
+      "file": "CBSideBend"
+    },
+    "CBSideCrunch": {
+      "full_name": "CBSideCrunch",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "CBSideCrunch"
+    },
+    "CBStandingCrunch": {
+      "full_name": "CBStandingCrunch",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "CBStandingCrunch"
+    },
+    "CBStandingOverheadCrunch": {
+      "full_name": "CBStandingOverheadCrunch",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "CBStandingOverheadCrunch"
+    },
+    "CBStandingTwistingCrunch": {
+      "full_name": "CBStandingTwistingCrunch",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "CBStandingTwistingCrunch"
+    },
+    "CBStiffLegDeadlift": {
+      "full_name": "CBStiffLegDeadlift",
+      "category": "Waist",
+      "uses_template": "deadlift_base",
+      "file": "CBStiffLegDeadlift"
+    },
+    "CBTwist": {
+      "full_name": "CBTwist",
+      "category": "Waist",
+      "uses_template": "twist_base",
+      "file": "CBTwist"
+    },
+    "ContraLateralSuperman": {
+      "full_name": "ContraLateralSuperman",
+      "category": "Waist",
+      "uses_template": "plank_base",
+      "file": "ContraLateralSuperman"
+    },
+    "DBOneArmStraightlegDeadlift": {
+      "full_name": "DBOneArmStraightlegDeadlift",
+      "category": "Waist",
+      "uses_template": "deadlift_base",
+      "file": "DBOneArmStraightlegDeadlift"
+    },
+    "DBPushCrunch": {
+      "full_name": "DBPushCrunch",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "DBPushCrunch"
+    },
+    "DBSideBend": {
+      "full_name": "DBSideBend",
+      "category": "Waist",
+      "uses_template": "side_bend_base",
+      "file": "DBSideBend"
+    },
+    "EBSideBend": {
+      "full_name": "EBSideBend",
+      "category": "Waist",
+      "uses_template": "side_bend_base",
+      "file": "EBSideBend"
+    },
+    "LVCrunchChestPad": {
+      "full_name": "LVCrunchChestPad",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "LVCrunchChestPad"
+    },
+    "LVDeadliftA": {
+      "full_name": "LVDeadliftA",
+      "category": "Waist",
+      "uses_template": "deadlift_base",
+      "file": "LVDeadliftA"
+    },
+    "LVKneelingTwist": {
+      "full_name": "LVKneelingTwist",
+      "category": "Waist",
+      "uses_template": "twist_base",
+      "file": "LVKneelingTwist"
+    },
+    "LVLyingCrunchArmsSide": {
+      "full_name": "LVLyingCrunchArmsSide",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "LVLyingCrunchArmsSide"
+    },
+    "LVPowerTwist": {
+      "full_name": "LVPowerTwist",
+      "category": "Waist",
+      "uses_template": "twist_base",
+      "file": "LVPowerTwist"
+    },
+    "LVSeatedCrunchArmPad": {
+      "full_name": "LVSeatedCrunchArmPad",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "LVSeatedCrunchArmPad"
+    },
+    "LVSeatedCrunchArmsForward": {
+      "full_name": "LVSeatedCrunchArmsForward",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "LVSeatedCrunchArmsForward"
+    },
+    "LVSeatedLegRaiseCrunchPL": {
+      "full_name": "LVSeatedLegRaiseCrunchPL",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "LVSeatedLegRaiseCrunchPL"
+    },
+    "LVSeatedSideLegRaiseCrunchOblique": {
+      "full_name": "LVSeatedSideLegRaiseCrunchOblique",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "LVSeatedSideLegRaiseCrunchOblique"
+    },
+    "LVSeatedTwistingLegRaiseCrunch": {
+      "full_name": "LVSeatedTwistingLegRaiseCrunch",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "LVSeatedTwistingLegRaiseCrunch"
+    },
+    "LVStiffLegDeadlift": {
+      "full_name": "LVStiffLegDeadlift",
+      "category": "Waist",
+      "uses_template": "deadlift_base",
+      "file": "LVStiffLegDeadlift"
+    },
+    "LVTwist": {
+      "full_name": "LVTwist",
+      "category": "Waist",
+      "uses_template": "twist_base",
+      "file": "LVTwist"
+    },
+    "LVTwistGripless": {
+      "full_name": "LVTwistGripless",
+      "category": "Waist",
+      "uses_template": "twist_base",
+      "file": "LVTwistGripless"
+    },
+    "LVTwistTorsoStationary": {
+      "full_name": "LVTwistTorsoStationary",
+      "category": "Waist",
+      "uses_template": "twist_base",
+      "file": "LVTwistTorsoStationary"
+    },
+    "SMBentkneeGoodmorning": {
+      "full_name": "SMBentkneeGoodmorning",
+      "category": "Waist",
+      "uses_template": "good_morning_base",
+      "file": "SMBentkneeGoodmorning"
+    },
+    "SMDeadlift": {
+      "full_name": "SMDeadlift",
+      "category": "Waist",
+      "uses_template": "deadlift_base",
+      "file": "SMDeadlift"
+    },
+    "SMStiffLegDeadlift": {
+      "full_name": "SMStiffLegDeadlift",
+      "category": "Waist",
+      "uses_template": "deadlift_base",
+      "file": "SMStiffLegDeadlift"
+    },
+    "STTwistingJackknife": {
+      "full_name": "STTwistingJackknife",
+      "category": "Waist",
+      "uses_template": "twist_base",
+      "file": "STTwistingJackknife"
+    },
+    "Superman": {
+      "full_name": "Superman",
+      "category": "Waist",
+      "uses_template": "plank_base",
+      "file": "Superman"
+    },
+    "WTBallCrunch": {
+      "full_name": "WTBallCrunch",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "WTBallCrunch"
+    },
+    "WTCrunch": {
+      "full_name": "WTCrunch",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "WTCrunch"
+    },
+    "WTInclineCrunchX": {
+      "full_name": "WTInclineCrunchX",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "WTInclineCrunchX"
+    },
+    "WTInclineSitupX": {
+      "full_name": "WTInclineSitupX",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "WTInclineSitupX"
+    },
+    "WTInclineTwistingCrunch": {
+      "full_name": "WTInclineTwistingCrunch",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "WTInclineTwistingCrunch"
+    },
+    "WTSideCrunch": {
+      "full_name": "WTSideCrunch",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "WTSideCrunch"
+    },
+    "WTSitUp": {
+      "full_name": "WTSitUp",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "WTSitUp"
+    },
+    "WTSitUpX": {
+      "full_name": "WTSitUpX",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "WTSitUpX"
+    },
+    "WTTwistingCrunch": {
+      "full_name": "WTTwistingCrunch",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "WTTwistingCrunch"
+    },
+    "WTTwistingCrunchOnBall": {
+      "full_name": "WTTwistingCrunchOnBall",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "WTTwistingCrunchOnBall"
+    },
+    "WTTwistingSitUp": {
+      "full_name": "WTTwistingSitUp",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "WTTwistingSitUp"
+    },
+    "WTTwistingSitUpX": {
+      "full_name": "WTTwistingSitUpX",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "WTTwistingSitUpX"
+    },
+    "WtCrunchChestX": {
+      "full_name": "WtCrunchChestX",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "WtCrunchChestX"
+    },
+    "WtInclineCrunch": {
+      "full_name": "WtInclineCrunch",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "WtInclineCrunch"
+    },
+    "WtInclineSitUp": {
+      "full_name": "WtInclineSitUp",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "WtInclineSitUp"
+    },
+    "WtInclineTwistingSitUp": {
+      "full_name": "WtInclineTwistingSitUp",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "WtInclineTwistingSitUp"
+    },
+    "WtInclineTwistingSitUpChest": {
+      "full_name": "WtInclineTwistingSitUpChest",
+      "category": "Waist",
+      "uses_template": "crunch_base",
+      "file": "WtInclineTwistingSitUpChest"
+    }
+  }
+}

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise Form Analyzer - Test Client</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .main {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+        
+        .section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+        }
+        
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
+        .video-container {
+            position: relative;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            aspect-ratio: 9/16;
+            max-height: 600px;
+        }
+        
+        #webcam, #output {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .control-group label {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        select, button {
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        
+        select {
+            background: white;
+            cursor: pointer;
+        }
+        
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 8px;
+        }
+        
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-indicator.connected {
+            background: #10b981;
+            box-shadow: 0 0 10px #10b981;
+        }
+        
+        .status-indicator.disconnected {
+            background: #ef4444;
+        }
+        
+        .api-status {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 1024px) {
+            .main {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏋️ Exercise Form Analyzer</h1>
+            <p>Real-time AI-powered form correction</p>
+        </div>
+        
+        <div class="main">
+            <!-- Left Panel: Video Feed -->
+            <div class="section">
+                <h2>📹 Live Feed</h2>
+                <div class="video-container">
+                    <video id="webcam" autoplay playsinline></video>
+                    <canvas id="output" style="display:none;"></canvas>
+                </div>
+            </div>
+            
+            <!-- Right Panel: Controls & Stats -->
+            <div class="section">
+                <h2>⚙️ Controls</h2>
+                
+                <div class="api-status">
+                    <span class="status-indicator" id="apiStatus"></span>
+                    <span id="apiStatusText">Checking connection...</span>
+                </div>
+                
+                <div class="controls">
+                    <div class="control-group">
+                        <label for="exerciseSelect">Select Exercise</label>
+                        <select id="exerciseSelect">
+                            <option value="squat">Squat</option>
+                            <option value="bicep_curl">Bicep Curl</option>
+                            <option value="push_up">Push-up</option>
+                        </select>
+                    </div>
+                    
+                    <button id="startBtn" onclick="startAnalysis()">🚀 Start Analysis</button>
+                    <button id="stopBtn" onclick="stopAnalysis()" disabled>⏹️ Stop</button>
+                    <button onclick="resetSession()">🔄 Reset Session</button>
+                </div>
+                
+                <h2 style="margin-top: 30px;">📊 Stats</h2>
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-label">Reps</div>
+                        <div class="stat-value" id="repsCount">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Quality</div>
+                        <div class="stat-value" id="qualityScore">-</div>
+                    </div>
+                    <div class="stat-card" style="grid-column: span 2;">
+                        <div class="stat-label">Status</div>
+                        <div class="stat-value" id="statusText" style="font-size: 1.3em;">READY</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000';
+        let webcamStream = null;
+        let analysisInterval = null;
+        let isAnalyzing = false;
+
+        // Check API connection
+        async function checkAPIConnection() {
+            try {
+                const response = await fetch(`${API_URL}/api/health`);
+                const data = await response.json();
+                
+                document.getElementById('apiStatus').className = 'status-indicator connected';
+                document.getElementById('apiStatusText').textContent = `Connected to API v${data.version}`;
+                return true;
+            } catch (error) {
+                document.getElementById('apiStatus').className = 'status-indicator disconnected';
+                document.getElementById('apiStatusText').textContent = 'API server not running';
+                return false;
+            }
+        }
+
+        // Initialize webcam
+        async function initWebcam() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        width: { ideal: 640 },
+                        height: { ideal: 1138 },
+                        facingMode: 'user'
+                    }
+                });
+                
+                const video = document.getElementById('webcam');
+                video.srcObject = stream;
+                webcamStream = stream;
+                return true;
+            } catch (error) {
+                alert('Error accessing webcam: ' + error.message);
+                return false;
+            }
+        }
+
+        // Capture frame and send to API
+        async function analyzeFrame() {
+            if (!isAnalyzing) return;
+            
+            const video = document.getElementById('webcam');
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0);
+            
+            const imageData = canvas.toDataURL('image/jpeg', 0.8);
+            const exercise = document.getElementById('exerciseSelect').value;
+            
+            try {
+                const response = await fetch(`${API_URL}/api/analyze/image`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        exercise: exercise,
+                        image: imageData
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Update stats
+                    document.getElementById('repsCount').textContent = data.feedback.reps;
+                    document.getElementById('statusText').textContent = data.feedback.status;
+                    
+                    if (data.feedback.quality) {
+                        document.getElementById('qualityScore').textContent = data.feedback.quality + '%';
+                    }
+                    
+                    // Display result image
+                    const outputCanvas = document.getElementById('output');
+                    const outputCtx = outputCanvas.getContext('2d');
+                    const img = new Image();
+                    img.onload = () => {
+                        outputCanvas.width = img.width;
+                        outputCanvas.height = img.height;
+                        outputCtx.drawImage(img, 0, 0);
+                    };
+                    img.src = data.image;
+                }
+            } catch (error) {
+                console.error('Analysis error:', error);
+            }
+        }
+
+        // Start analysis
+        async function startAnalysis() {
+            const apiConnected = await checkAPIConnection();
+            if (!apiConnected) {
+                alert('Please start the API server first!');
+                return;
+            }
+            
+            const webcamReady = webcamStream || await initWebcam();
+            if (!webcamReady) return;
+            
+            isAnalyzing = true;
+            document.getElementById('startBtn').disabled = true;
+            document.getElementById('stopBtn').disabled = false;
+            document.getElementById('webcam').style.display = 'none';
+            document.getElementById('output').style.display = 'block';
+            
+            // Analyze at ~10 FPS (every 100ms)
+            analysisInterval = setInterval(analyzeFrame, 100);
+        }
+
+        // Stop analysis
+        function stopAnalysis() {
+            isAnalyzing = false;
+            clearInterval(analysisInterval);
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('stopBtn').disabled = true;
+            document.getElementById('webcam').style.display = 'block';
+            document.getElementById('output').style.display = 'none';
+        }
+
+        // Reset session
+        async function resetSession() {
+            const exercise = document.getElementById('exerciseSelect').value;
+            
+            try {
+                await fetch(`${API_URL}/api/analyze/reset`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ exercise })
+                });
+                
+                document.getElementById('repsCount').textContent = '0';
+                document.getElementById('qualityScore').textContent = '-';
+                document.getElementById('statusText').textContent = 'READY';
+                
+                alert('Session reset!');
+            } catch (error) {
+                console.error('Reset error:', error);
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', () => {
+            checkAPIConnection();
+        });
+    </script>
+</body>
+</html>
