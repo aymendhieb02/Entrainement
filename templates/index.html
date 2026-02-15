@@ -173,17 +173,6 @@
             }
         }
 
-        .camera-mode {
-            margin-bottom: 12px;
-        }
-        .camera-mode-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            color: rgba(255,255,255,0.9);
-        }
-        .camera-mode-label input { width: 18px; height: 18px; }
         .video-container {
             position: relative;
             width: 100%;
@@ -194,39 +183,6 @@
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
             background: #000;
         }
-        .browser-camera-container video,
-        .browser-camera-container canvas {
-            width: 100%;
-            height: auto;
-            display: block;
-            max-height: 85vh;
-            object-fit: contain;
-        }
-        .browser-camera-container canvas {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            pointer-events: none;
-        }
-        .browser-overlay {
-            position: absolute;
-            left: 0;
-            top: 0;
-            padding: 12px 20px;
-            color: white;
-            text-shadow: 0 1px 2px #000;
-            font-weight: 600;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        #overlay-reps { font-size: 1.5rem; }
-        #overlay-feedback { font-size: 1.1rem; color: #00ff88; }
-        #overlay-issue { font-size: 0.95rem; color: #ff6666; }
-
         #video-feed {
             width: 100%;
             height: auto;
@@ -342,23 +298,8 @@
             <button id="stop-btn" class="btn" disabled>Stop Analysis</button>
         </div>
 
-        <div class="camera-mode">
-            <label class="camera-mode-label">
-                <input type="checkbox" id="use-browser-camera" />
-                <span>Use my camera (works on Railway)</span>
-            </label>
-        </div>
-        <div class="video-container" id="server-video-container">
+        <div class="video-container">
             <img id="video-feed" src="{{ url_for('video_feed') }}" alt="Live Video Feed">
-        </div>
-        <div class="video-container browser-camera-container" id="browser-camera-container" style="display: none;">
-            <video id="browser-video" autoplay playsinline muted></video>
-            <canvas id="browser-canvas"></canvas>
-            <div id="browser-camera-overlay" class="browser-overlay">
-                <span id="overlay-reps">REPS: 0</span>
-                <span id="overlay-feedback"></span>
-                <span id="overlay-issue"></span>
-            </div>
         </div>
 
         <div class="info-panel">
@@ -378,7 +319,6 @@
 
         <div class="footer">
             <p>💡 Tip: Select your exercise above, then position yourself in view for best results</p>
-            <p style="margin-top:8px;font-size:0.85rem;opacity:0.8;">On Railway: leave HEADLESS unset and check "Use my camera" to analyse with your browser webcam.</p>
         </div>
     </div>
 
@@ -388,12 +328,7 @@
         let categories = [];
         let exercisesByCategory = {};
         let analysisActive = false;
-        let useBrowserCamera = false;
-        let browserCameraStream = null;
-        let processFrameInterval = null;
-        let lastProcessResponse = null;
 
-        // DOM elements
         const categorySelect = document.getElementById('category-select');
         const exerciseSelect = document.getElementById('exercise-select');
         const startBtn = document.getElementById('start-btn');
@@ -402,14 +337,6 @@
         const currentExerciseName = document.getElementById('current-exercise-name');
         const currentCategory = document.getElementById('current-category');
         const analysisStatus = document.getElementById('analysis-status');
-        const useBrowserCameraCheck = document.getElementById('use-browser-camera');
-        const serverVideoContainer = document.getElementById('server-video-container');
-        const browserCameraContainer = document.getElementById('browser-camera-container');
-        const browserVideo = document.getElementById('browser-video');
-        const browserCanvas = document.getElementById('browser-canvas');
-        const overlayReps = document.getElementById('overlay-reps');
-        const overlayFeedback = document.getElementById('overlay-feedback');
-        const overlayIssue = document.getElementById('overlay-issue');
 
         // Utility functions
         function showMessage(message, type = 'success') {
@@ -540,8 +467,6 @@
                 if (data.success) {
                     analysisActive = data.analysis_active;
                     updateAnalysisUI();
-                    if (useBrowserCamera && active) startBrowserCameraLoop();
-                    if (useBrowserCamera && !active) stopBrowserCameraLoop();
                     showMessage(active ? 'Analysis started' : 'Analysis stopped', 'success');
                 } else {
                     showMessage('Failed to update analysis state', 'error');
@@ -551,85 +476,6 @@
                 showMessage('Error updating analysis state', 'error');
             }
         }
-
-        async function startBrowserCameraLoop() {
-            if (processFrameInterval) return;
-            const ctx = browserCanvas.getContext('2d');
-            processFrameInterval = setInterval(async () => {
-                if (!browserVideo.srcObject || browserVideo.readyState < 2) return;
-                const w = browserVideo.videoWidth;
-                const h = browserVideo.videoHeight;
-                if (w === 0 || h === 0) return;
-                browserCanvas.width = w;
-                browserCanvas.height = h;
-                ctx.drawImage(browserVideo, 0, 0, w, h);
-                if (lastProcessResponse && lastProcessResponse.joints) {
-                    const r = 12;
-                    lastProcessResponse.joints.forEach(j => {
-                        ctx.beginPath();
-                        ctx.arc(j.x * w, j.y * h, r, 0, 2 * Math.PI);
-                        ctx.fillStyle = j.color === 'green' ? '#00ff88' : '#ff4444';
-                        ctx.fill();
-                    });
-                }
-                if (!analysisActive) return;
-                const dataUrl = browserCanvas.toDataURL('image/jpeg', 0.75);
-                try {
-                    const res = await fetch('/api/process_frame', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ image: dataUrl })
-                    });
-                    const data = await res.json();
-                    if (res.status === 503) {
-                        overlayFeedback.textContent = data.error || 'Enable browser camera on server';
-                        return;
-                    }
-                    lastProcessResponse = data;
-                    overlayReps.textContent = 'REPS: ' + (data.reps ?? 0);
-                    overlayFeedback.textContent = data.feedback || '';
-                    overlayFeedback.style.color = (data.feedback && data.feedback.includes('GOOD')) ? '#00ff88' : (data.feedback === 'FIX FORM' ? '#ff4444' : '#00f5ff');
-                    overlayIssue.textContent = data.form_issue || '';
-                } catch (e) {
-                    console.error('process_frame error', e);
-                }
-            }, 150);
-        }
-
-        function stopBrowserCameraLoop() {
-            if (processFrameInterval) {
-                clearInterval(processFrameInterval);
-                processFrameInterval = null;
-            }
-        }
-
-        useBrowserCameraCheck.addEventListener('change', async () => {
-            useBrowserCamera = useBrowserCameraCheck.checked;
-            if (useBrowserCamera) {
-                serverVideoContainer.style.display = 'none';
-                browserCameraContainer.style.display = 'block';
-                try {
-                    browserCameraStream = await navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 1280 }, height: { ideal: 720 } } });
-                    browserVideo.srcObject = browserCameraStream;
-                    showMessage('Using your camera', 'success');
-                } catch (e) {
-                    showMessage('Could not access camera: ' + e.message, 'error');
-                    useBrowserCameraCheck.checked = false;
-                    useBrowserCamera = false;
-                    serverVideoContainer.style.display = 'block';
-                    browserCameraContainer.style.display = 'none';
-                }
-            } else {
-                stopBrowserCameraLoop();
-                if (browserCameraStream) {
-                    browserCameraStream.getTracks().forEach(t => t.stop());
-                    browserCameraStream = null;
-                }
-                browserVideo.srcObject = null;
-                serverVideoContainer.style.display = 'block';
-                browserCameraContainer.style.display = 'none';
-            }
-        });
 
         // Event listeners
         categorySelect.addEventListener('change', (e) => {

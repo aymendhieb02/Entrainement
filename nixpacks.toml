@@ -1,3 +1,0 @@
-# Install libGL so OpenCV (cv2) can load on Railway (no display server)
-[phases.setup]
-nixPkgs = ["libGL", "libGLU", "glib"]
