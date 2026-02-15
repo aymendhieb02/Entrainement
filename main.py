@@ -2,6 +2,16 @@
 Transformini Coach - Local Flask app (optional).
 For deployment use Streamlit: streamlit run streamlit_app.py
 """
+import sys
+import os
+
+# If Streamlit is running this file (e.g. main module set to main.py on Streamlit Cloud), run the Streamlit app instead
+if "streamlit" in sys.modules:
+    import runpy
+    _dir = os.path.dirname(os.path.abspath(__file__))
+    runpy.run_path(os.path.join(_dir, "streamlit_app.py"), run_name="__main__")
+    sys.exit(0)
+
 import time
 import threading
 import cv2
