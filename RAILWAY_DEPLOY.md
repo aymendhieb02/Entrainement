@@ -70,9 +70,12 @@ Use the same token as above when Git asks for a password.
 3. Connect GitHub if needed and select the repo: **aymendhieb02/Entrainement**.
 4. Branch: **main**.
 5. Railway will detect:
-   - **Python** (from `requirements.txt`)
+   - **Python 3.11** (from `runtime.txt`)
+   - **Python dependencies** (from `requirements.txt`)
    - **Web process** from `Procfile`: `web: gunicorn -b 0.0.0.0:$PORT main:app`
 6. Click **Deploy**. Railway will build and run the app.
+   
+   **Note**: If you get version errors, make sure `runtime.txt` specifies Python 3.11+ and `requirements.txt` uses compatible versions (mediapipe>=0.10.30).
 
 ### 3.3 Get a public URL
 
