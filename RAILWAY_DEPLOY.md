@@ -87,10 +87,10 @@ Use the same token as above when Git asks for a password.
 
 If the repo has multiple folders and the app is in a subfolder, set **Root Directory** in Railway to that folder (e.g. the folder that contains `main.py`, `Procfile`, `requirements.txt`). If everything is at the repo root, leave it empty.
 
-### 3.5 Environment variables (optional)
+### 3.5 Environment variables (fix libGL crash)
 
 In Railway: **Variables** tab. You usually don’t need any for this app.  
-If you add a `.env` file later, add the same variables in Railway instead of committing `.env`.
+If the app crashes with libGL.so.1: add variable **RAILPACK_DEPLOY_APT_PACKAGES** = **libgl1**, then Redeploy. For .env vars, use the Variables tab.
 
 ---
 
