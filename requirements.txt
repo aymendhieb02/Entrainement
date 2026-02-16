@@ -7,7 +7,7 @@ opencv-python-headless==4.9.0.80
 mediapipe==0.10.30
 protobuf==3.20.3
 attrs==23.2.0
-absl-py==1.4.0
+absl-py ~= 2.3
 flatbuffers==23.5.26
 
 Pillow>=10.0.0
