@@ -4,7 +4,8 @@ flask==3.0.0
 flask-cors==4.0.0
 numpy==1.26.4
 Pillow>=10.0.0
-mediapipe>=0.10.31
+# 0.10.31+ removed solutions API; use 0.10.30 for mp.solutions.pose
+mediapipe==0.10.30
 absl-py>=1.4.0
 attrs>=25.4.0
 flatbuffers>=25.12.19
