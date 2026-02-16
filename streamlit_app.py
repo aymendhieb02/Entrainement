@@ -9,7 +9,14 @@ from biomechanics import (
     load_db, BiomechanicsCoach, prettify_exercise_name,
     get_categories_list, get_exercises_list, get_first_valid_exercise_key,
 )
-
+st.sidebar.header("Debug")
+try:
+    import mediapipe as mp, cv2, numpy as np
+    st.sidebar.text(f"mediapipe: {mp.__version__}")
+    st.sidebar.text(f"cv2: {cv2.__version__}")
+    st.sidebar.text(f"numpy: {np.__version__}")
+except Exception as e:
+    st.sidebar.text(f"debug import error: {e}")
 # Shared state for the video frame callback (runs in another thread)
 LIVE_STATE = {"coach": None, "analysis_active": False}
 
@@ -18,23 +25,29 @@ POSE_AVAILABLE = False
 pose = None
 mp_pose = None
 cv2 = np = None
+_pose_import_traceback = None
 
+import traceback
 try:
     import cv2
     import numpy as np
     import mediapipe as mp
     mp_pose = mp.solutions.pose
-    pose = mp_pose.Pose(
-        min_detection_confidence=0.5,
-        min_tracking_confidence=0.5,
-        model_complexity=0,
-    )
-    POSE_AVAILABLE = True
-except (ImportError, OSError, AttributeError):
+    try:
+        pose = mp_pose.Pose(
+            min_detection_confidence=0.5,
+            min_tracking_confidence=0.5,
+            model_complexity=0,
+        )
+        POSE_AVAILABLE = True
+    except Exception:
+        _pose_import_traceback = traceback.format_exc()
+except Exception:
+    _pose_import_traceback = traceback.format_exc()
     try:
         import cv2
         import numpy as np
-    except ImportError:
+    except Exception:
         cv2 = np = None
 
 
@@ -101,6 +114,37 @@ st.markdown("""
 
 st.title("Transformini Coach")
 st.caption("Live camera — your device feed is analyzed in real time. Allow camera when prompted; click Start below to begin the stream.")
+
+# Debug sidebar showing installed versions / import errors when deploying
+with st.sidebar:
+    st.header("Debug")
+    try:
+        import importlib
+        # show versions when available
+        try:
+            import mediapipe as _mp
+            st.text(f"mediapipe: {_mp.__version__}")
+        except Exception:
+            st.text("mediapipe: not available")
+        try:
+            import cv2 as _cv2
+            st.text(f"cv2: {_cv2.__version__}")
+        except Exception:
+            st.text("cv2: not available")
+        try:
+            import numpy as _np
+            st.text(f"numpy: {_np.__version__}")
+        except Exception:
+            st.text("numpy: not available")
+    except Exception:
+        st.text("debug: import check failed")
+    # show full traceback if pose initialization failed
+    try:
+        if _pose_import_traceback:
+            st.text("pose init traceback:")
+            st.code(_pose_import_traceback)
+    except Exception:
+        pass
 
 @st.cache_data
 def get_db():
