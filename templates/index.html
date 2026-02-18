@@ -2,518 +2,750 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transformini Coach - Live Feed</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Transformini Coach</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
             color: white;
-            padding: 20px;
+            padding: 10px;
         }
-
         .container {
             max-width: 1200px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.05);
+            margin: 0 auto;
+            background: rgba(255,255,255,0.05);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 15px;
+            padding: 15px;
         }
-
         h1 {
             text-align: center;
-            margin-bottom: 10px;
-            font-size: 2.5rem;
+            font-size: 1.8rem;
             background: linear-gradient(45deg, #00f5ff, #00ff88);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: 800;
+            margin-bottom: 15px;
         }
-
-        .subtitle {
-            text-align: center;
-            margin-bottom: 30px;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 1.1rem;
-        }
-
         .exercise-selector {
             display: flex;
-            gap: 15px;
-            margin-bottom: 25px;
+            gap: 8px;
+            margin-bottom: 15px;
             flex-wrap: wrap;
-            align-items: flex-end;
         }
-
-        .select-group {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .select-group label {
+        .select-group { flex: 1; min-width: 140px; }
+        label {
             display: block;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
+            margin-bottom: 5px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.7rem;
+            letter-spacing: 0.5px;
+            color: rgba(255,255,255,0.8);
         }
-
         select {
             width: 100%;
-            padding: 12px 16px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
+            padding: 10px 8px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
             color: white;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            padding-right: 40px;
+            font-size: 0.9rem;
         }
-
-        select:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(0, 245, 255, 0.5);
-        }
-
-        select:focus {
-            outline: none;
-            border-color: #00f5ff;
-            box-shadow: 0 0 0 3px rgba(0, 245, 255, 0.2);
-        }
-
-        select option {
-            background: #1a1a2e;
-            color: white;
-        }
-
-        select:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
+        select option { background: #1a1a2e; color: white; }
+        select optgroup { background: #0f0c29; color: rgba(255,255,255,0.5); font-size: 0.8rem; }
+        select option.featured { background: #1a2e1a; color: #00ff88; font-weight: 600; }
+        select:disabled { opacity: 0.5; }
         .btn {
-            padding: 12px 30px;
+            padding: 10px 20px;
             background: linear-gradient(45deg, #00f5ff, #00ff88);
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             color: #0f0c29;
             font-weight: 700;
-            font-size: 1rem;
             cursor: pointer;
-            transition: all 0.3s ease;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(0, 245, 255, 0.3);
+            font-size: 0.85rem;
+            flex: 1;
+            min-width: 80px;
         }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 245, 255, 0.5);
-        }
-
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
         .status-message {
-            padding: 12px 20px;
+            padding: 10px 15px;
             border-radius: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             display: none;
-            animation: slideIn 0.3s ease;
+            font-size: 0.85rem;
         }
+        .status-message.success { background: rgba(0,255,136,0.2); color: #00ff88; }
+        .status-message.error   { background: rgba(255,68,68,0.2);  color: #ff4444; }
 
-        .status-message.success {
-            background: rgba(0, 255, 136, 0.2);
-            border: 1px solid rgba(0, 255, 136, 0.4);
-            color: #00ff88;
-        }
-
-        .status-message.error {
-            background: rgba(255, 68, 68, 0.2);
-            border: 1px solid rgba(255, 68, 68, 0.4);
-            color: #ff4444;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
+        /* ── VIDEO ── */
         .video-container {
             position: relative;
             width: 100%;
-            min-height: 50vh;
-            max-width: 100%;
-            border-radius: 15px;
+            min-height: 40vh;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
             background: #000;
         }
-        #video-feed {
+        #camera {
             width: 100%;
             height: auto;
-            min-height: 50vh;
-            max-height: 85vh;
-            object-fit: contain;
             display: block;
+            max-height: 70vh;
+            object-fit: cover;
+        }
+        /* Pose overlay */
+        #overlay-canvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
         }
 
-        .info-panel {
-            margin-top: 25px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+        /* ── HUD top ── */
+        .video-hud {
+            position: absolute;
+            top: 10px; left: 10px; right: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            pointer-events: none;
+            z-index: 10;
+            gap: 8px;
         }
-
-        .info-card {
-            background: rgba(255, 255, 255, 0.08);
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        .hud-reps {
+            background: rgba(0,0,0,0.82);
+            padding: 8px 14px;
+            border-radius: 8px;
+            border: 2px solid #00ff88;
+            box-shadow: 0 0 14px rgba(0,255,136,0.45);
+            flex-shrink: 0;
         }
-
-        .info-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(0, 245, 255, 0.3);
-        }
-
-        .info-card h3 {
-            font-size: 0.9rem;
+        .hud-reps-label {
+            font-size: 0.6rem;
+            color: rgba(255,255,255,0.7);
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: rgba(255, 255, 255, 0.6);
-            margin-bottom: 8px;
+        }
+        .hud-reps-count {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: #00ff88;
+            line-height: 1;
+            text-shadow: 0 0 8px rgba(0,255,136,0.8);
+        }
+        .hud-feedback {
+            background: rgba(0,0,0,0.82);
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 2px solid #00f5ff;
+            text-align: right;
+            box-shadow: 0 0 14px rgba(0,245,255,0.4);
+            max-width: 58%;
+            transition: border-color 0.3s;
+        }
+        .hud-feedback-status {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #00f5ff;
+            margin-bottom: 3px;
+            text-shadow: 0 0 8px rgba(0,245,255,0.8);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: color 0.3s;
+        }
+        .hud-feedback-issue {
+            font-size: 0.7rem;
+            color: #ff4444;
+            font-weight: 600;
+            text-shadow: 0 0 8px rgba(255,68,68,0.8);
+            line-height: 1.2;
         }
 
+        /* ── PROGRESS BAR (bottom of video) ── */
+        .hud-progress-wrap {
+            position: absolute;
+            bottom: 36px; left: 0; right: 0;
+            padding: 0 12px;
+            pointer-events: none;
+            z-index: 10;
+        }
+        .hud-progress-label {
+            font-size: 0.6rem;
+            color: rgba(255,255,255,0.65);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 3px;
+            text-align: center;
+        }
+        .hud-progress-track {
+            width: 100%;
+            height: 10px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .hud-progress-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 6px;
+            background: linear-gradient(90deg, #00f5ff, #00ff88);
+            transition: width 0.15s ease, background 0.3s;
+        }
+        .hud-progress-fill.bad {
+            background: linear-gradient(90deg, #ff4444, #ff8800);
+        }
+
+        /* ── STATUS BAR ── */
+        .video-status-bar {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            background: rgba(0,0,0,0.82);
+            padding: 6px 12px;
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .video-status-bar strong {
+            font-size: 0.75rem;
+            color: #00f5ff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .video-status-bar #analysis-status { transition: color 0.3s; }
+
+        /* ── INFO PANEL ── */
+        .info-panel {
+            margin-top: 15px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+        }
+        .info-card {
+            background: rgba(255,255,255,0.08);
+            padding: 12px;
+            border-radius: 10px;
+        }
+        .info-card h3 {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 5px;
+        }
         .info-card p {
-            font-size: 1.3rem;
+            font-size: 1rem;
             font-weight: 600;
             color: #00f5ff;
+            transition: color 0.3s;
         }
 
-        .status-indicator {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #00ff88;
-            animation: pulse 2s infinite;
-            margin-right: 8px;
+        /* ── DESKTOP ── */
+        @media (min-width: 768px) {
+            body { padding: 20px; }
+            .container { padding: 30px; border-radius: 20px; }
+            h1 { font-size: 2.5rem; margin-bottom: 25px; }
+            .exercise-selector { gap: 15px; margin-bottom: 20px; }
+            .select-group { min-width: 200px; }
+            select { padding: 12px; font-size: 1rem; }
+            .btn { padding: 12px 30px; font-size: 1rem; flex: 0 0 auto; }
+            .status-message { font-size: 1rem; }
+            #camera { max-height: 80vh; object-fit: contain; }
+            .video-hud { top: 20px; left: 20px; right: 20px; gap: 15px; }
+            .hud-reps { padding: 12px 24px; }
+            .hud-reps-count { font-size: 3.5rem; }
+            .hud-feedback { padding: 12px 20px; min-width: 200px; max-width: none; }
+            .hud-feedback-status { font-size: 1.5rem; }
+            .hud-feedback-issue { font-size: 0.9rem; }
+            .hud-progress-wrap { bottom: 40px; padding: 0 20px; }
+            .hud-progress-track { height: 12px; }
+            .video-status-bar { padding: 8px 20px; }
+            .video-status-bar strong { font-size: 0.9rem; }
+            .info-panel { gap: 20px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-top: 20px; }
+            .info-card { padding: 18px; }
+            .info-card h3 { font-size: 0.85rem; }
+            .info-card p { font-size: 1.25rem; }
         }
-
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.5;
-            }
+        @media (max-width: 380px) {
+            h1 { font-size: 1.4rem; }
+            .hud-reps-count { font-size: 1.8rem; }
+            .hud-feedback-status { font-size: 0.85rem; }
+            .btn { font-size: 0.75rem; padding: 8px 12px; }
         }
-
-        .footer {
-            margin-top: 20px;
-            text-align: center;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.9rem;
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .container {
-                padding: 20px;
-            }
-
-            .exercise-selector {
-                flex-direction: column;
-            }
-
-            .select-group {
-                width: 100%;
-            }
+        @media (max-height: 500px) and (orientation: landscape) {
+            h1 { font-size: 1.2rem; margin-bottom: 8px; }
+            .container { padding: 8px; }
+            .exercise-selector { margin-bottom: 8px; }
+            .info-panel { display: none; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🏋️ Transformini Coach</h1>
-        <p class="subtitle">
-            <span class="status-indicator"></span>
-            Live Camera Feed - Real-time Form Analysis
-        </p>
+<div class="container">
+    <h1>🏋️ Transformini Coach</h1>
+    <div id="status-message" class="status-message"></div>
 
-        <div id="status-message" class="status-message"></div>
-
-        <div class="exercise-selector">
-            <div class="select-group">
-                <label for="category-select">Category</label>
-                <select id="category-select">
-                    <option value="">Select Category...</option>
-                </select>
-            </div>
-            <div class="select-group">
-                <label for="exercise-select">Exercise</label>
-                <select id="exercise-select" disabled>
-                    <option value="">Select Category First...</option>
-                </select>
-            </div>
-            <button id="start-btn" class="btn" disabled>Start Analysis</button>
-            <button id="stop-btn" class="btn" disabled>Stop Analysis</button>
+    <div class="exercise-selector">
+        <div class="select-group">
+            <label>Category</label>
+            <select id="category-select"><option value="">Select...</option></select>
         </div>
-
-        <div class="video-container">
-            <img id="video-feed" src="{{ url_for('video_feed') }}" alt="Live Video Feed">
+        <div class="select-group">
+            <label>Exercise</label>
+            <select id="exercise-select" disabled><option value="">Select...</option></select>
         </div>
+        <button id="start-btn" class="btn" disabled>START</button>
+        <button id="stop-btn"  class="btn" disabled>STOP</button>
+    </div>
 
-        <div class="info-panel">
-            <div class="info-card">
-                <h3>Current Exercise</h3>
-                <p id="current-exercise-name">Loading...</p>
+    <div class="video-container">
+        <video id="camera" autoplay playsinline muted></video>
+        <canvas id="overlay-canvas"></canvas>
+        <canvas id="frame" style="display:none;"></canvas>
+
+        <div class="video-hud">
+            <div class="hud-reps">
+                <div class="hud-reps-label">REPS</div>
+                <div class="hud-reps-count" id="hud-reps">0</div>
             </div>
-            <div class="info-card">
-                <h3>Category</h3>
-                <p id="current-category">Loading...</p>
-            </div>
-            <div class="info-card">
-                <h3>Status</h3>
-                <p id="analysis-status">Idle</p>
+            <div class="hud-feedback" id="hud-feedback-box">
+                <div class="hud-feedback-status" id="hud-feedback">READY</div>
+                <div class="hud-feedback-issue"  id="hud-issue"></div>
             </div>
         </div>
 
-        <div class="footer">
-            <p>💡 Tip: Select your exercise above, then position yourself in view for best results</p>
+        <!-- Range-of-motion progress bar -->
+        <div class="hud-progress-wrap">
+            <div class="hud-progress-label">Range of motion</div>
+            <div class="hud-progress-track">
+                <div class="hud-progress-fill" id="progress-fill"></div>
+            </div>
+        </div>
+
+        <div class="video-status-bar">
+            <strong id="current-exercise-name">—</strong>
+            <strong id="current-category">—</strong>
+            <strong id="analysis-status">Idle</strong>
         </div>
     </div>
 
-    <script>
-        // State management
-        let currentExerciseKey = null;
-        let categories = [];
-        let exercisesByCategory = {};
-        let analysisActive = false;
+    <div class="info-panel">
+        <div class="info-card"><h3>Total Reps</h3><p id="reps-display">0</p></div>
+        <div class="info-card"><h3>Feedback</h3>  <p id="feedback-display">READY</p></div>
+        <div class="info-card"><h3>Form</h3>       <p id="form-status-display">Waiting…</p></div>
+    </div>
+</div>
 
-        const categorySelect = document.getElementById('category-select');
-        const exerciseSelect = document.getElementById('exercise-select');
-        const startBtn = document.getElementById('start-btn');
-        const stopBtn = document.getElementById('stop-btn');
-        const statusMessage = document.getElementById('status-message');
-        const currentExerciseName = document.getElementById('current-exercise-name');
-        const currentCategory = document.getElementById('current-category');
-        const analysisStatus = document.getElementById('analysis-status');
+<!-- MediaPipe -->
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1675469404/pose.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.3.1620248257/drawing_utils.js"></script>
 
-        // Utility functions
-        function showMessage(message, type = 'success') {
-            statusMessage.textContent = message;
-            statusMessage.className = `status-message ${type}`;
-            statusMessage.style.display = 'block';
-            setTimeout(() => {
-                statusMessage.style.display = 'none';
-            }, 4000);
+<script>
+// ═══════════════════════════════════════════════════
+// FEATURED EXERCISES (from your workout link list)
+// ═══════════════════════════════════════════════════
+const FEATURED = new Set([
+    "BBBenchPress","BBCurl","BBDeclinePress","BBHighRow","BBHipThrust",
+    "BBInclinePress","BBRow","BulgarianSplitSquat","CBCrossover","CBCrunch",
+    "CBCurl","CBFly","CBFrontRaise","CBHighRow","CBInclineFly","CBInclinePress",
+    "CBKickback","CBLateralRaise","CBObliqueCrunch","CBObliqueTwist",
+    "CBPulldown","CBRearDeltFly","CBRow","CBStepUp","CBTricepsExtension",
+    "CBTricepsKickback","CBUprightRow","CrunchMachine","DBChestPress",
+    "DBCurl","DBFly","DBFrontRaise","DBHipThrust","DBInclineFly",
+    "DBInclinePress","DBLateralRaise","DBRearDeltRow","DBRow","DBShoulderPress",
+    "DBStepUp","DBStiffLegDeadlift","DBTricepsExtension","Deadlift",
+    "DeclineCrunch","FacePull","HammerCurl","HangingLegRaise","HighRow",
+    "HipAbductionMachine","HipAdductionMachine","HipThrustMachine",
+    "Hyperextension","InclineCurl","KickbackMachine","LatPulldown",
+    "LateralRaiseMachine","LegExtension","LegPress","Lunges","LyingLegCurl",
+    "PecFly","PreacherCurl","RowMachine","RussianTwist","SeatedCalfRaise",
+    "SeatedLegCurl","SissySquat","Skullcrusher","Squat","StandingCalfRaise",
+    "SumoDeadlift","SumoSquat","VSquat","ShoulderPress","Shrugs"
+]);
+
+// Mediapipe landmark indices
+const LM = {
+    LEFTSHOULDER:11, RIGHTSHOULDER:12,
+    LEFTELBOW:13,    RIGHTELBOW:14,
+    LEFTWRIST:15,    RIGHTWRIST:16,
+    LEFTHIP:23,      RIGHTHIP:24,
+    LEFTKNEE:25,     RIGHTKNEE:26,
+    LEFTANKLE:27,    RIGHTANKLE:28
+};
+
+// ═══════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════
+let analysisActive = false;
+let cameraReady    = false;
+let frameInterval  = null;
+let latestFormData = null;
+let sendingFrame   = false; // prevent overlapping requests
+
+const els = {
+    cat:        document.getElementById('category-select'),
+    ex:         document.getElementById('exercise-select'),
+    start:      document.getElementById('start-btn'),
+    stop:       document.getElementById('stop-btn'),
+    msg:        document.getElementById('status-message'),
+    reps:       document.getElementById('reps-display'),
+    feedback:   document.getElementById('feedback-display'),
+    formStatus: document.getElementById('form-status-display'),
+    video:      document.getElementById('camera'),
+    canvas:     document.getElementById('frame'),
+    overlay:    document.getElementById('overlay-canvas'),
+    exName:     document.getElementById('current-exercise-name'),
+    exCat:      document.getElementById('current-category'),
+    aStatus:    document.getElementById('analysis-status'),
+    hudReps:    document.getElementById('hud-reps'),
+    hudFeedback:document.getElementById('hud-feedback'),
+    hudFeedbackBox: document.getElementById('hud-feedback-box'),
+    hudIssue:   document.getElementById('hud-issue'),
+    progress:   document.getElementById('progress-fill'),
+};
+const ctx        = els.canvas.getContext('2d');
+const overlayCtx = els.overlay.getContext('2d');
+
+// ═══════════════════════════════════════════════════
+// MEDIAPIPE POSE (client-side – visualization only)
+// ═══════════════════════════════════════════════════
+const mpPose = new Pose({
+    locateFile: f => `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1675469404/${f}`
+});
+mpPose.setOptions({ modelComplexity:1, smoothLandmarks:true,
+                    minDetectionConfidence:0.5, minTrackingConfidence:0.5 });
+
+mpPose.onResults(results => {
+    if (!cameraReady || !results.poseLandmarks) {
+        overlayCtx.clearRect(0,0,els.overlay.width,els.overlay.height);
+        return;
+    }
+    els.overlay.width  = els.video.videoWidth;
+    els.overlay.height = els.video.videoHeight;
+    overlayCtx.clearRect(0,0,els.overlay.width,els.overlay.height);
+
+    // Draw skeleton connections (cyan)
+    drawConnectors(overlayCtx, results.poseLandmarks, POSE_CONNECTIONS,
+                   { color:'#00f5ff', lineWidth: window.innerWidth < 600 ? 3 : 4 });
+
+    // Draw landmarks
+    if (analysisActive && latestFormData && latestFormData.joint_colors) {
+        drawColoredLandmarks(results.poseLandmarks, latestFormData.joint_colors);
+    } else {
+        // default green dots when not analyzing
+        drawLandmarks(overlayCtx, results.poseLandmarks,
+                      { color:'#00ff88', fillColor:'#00ff88', radius:5 });
+    }
+});
+
+function drawColoredLandmarks(landmarks, jointColors) {
+    const w = els.overlay.width, h = els.overlay.height;
+    const isMobile = window.innerWidth < 600;
+
+    // Build index -> color map from backend
+    // Backend key format: "LEFT_ELBOW", "RIGHT_KNEE" etc.
+    const idxColorMap = {};
+    for (const [key, color] of Object.entries(jointColors)) {
+        // normalize: "LEFT_ELBOW" -> "LEFTELBOW"
+        const normalized = key.replace('_','');
+        const idx = LM[normalized];
+        if (idx !== undefined) {
+            idxColorMap[idx] = color; // [B,G,R] array
+        }
+    }
+
+    landmarks.forEach((lm, idx) => {
+        const x = lm.x * w, y = lm.y * h;
+        let color  = '#00ff88';
+        let radius = isMobile ? 5 : 7;
+        let isKey  = false;
+
+        if (idxColorMap[idx] !== undefined) {
+            const [b,g,r] = idxColorMap[idx];
+            color  = `rgb(${r},${g},${b})`;
+            // Make key joints (non-green = being tracked) much bigger
+            isKey  = true;
+            radius = isMobile ? 10 : 14;
         }
 
-        function updateAnalysisUI() {
-            if (analysisActive) {
-                analysisStatus.textContent = 'Analyzing';
-                startBtn.disabled = true;
-                stopBtn.disabled = false;
-            } else {
-                analysisStatus.textContent = 'Idle';
-                // Start can be enabled only if an exercise is selected
-                startBtn.disabled = !exerciseSelect.value;
-                stopBtn.disabled = true;
-            }
+        // Outer glow ring for key joints
+        if (isKey) {
+            overlayCtx.beginPath();
+            overlayCtx.arc(x, y, radius + 4, 0, 2*Math.PI);
+            overlayCtx.strokeStyle = color.replace('rgb','rgba').replace(')',',0.35)');
+            overlayCtx.lineWidth = 3;
+            overlayCtx.stroke();
         }
 
-        // Fetch current exercise on load
-        async function fetchCurrentExercise() {
-            try {
-                const response = await fetch('/api/current_exercise');
-                const data = await response.json();
-                currentExerciseKey = data.exercise_key;
-                currentExerciseName.textContent = data.exercise_name;
-                currentCategory.textContent = data.category;
-                // When page loads, analysis is paused by default
-                analysisActive = false;
-                updateAnalysisUI();
-            } catch (error) {
-                console.error('Error fetching current exercise:', error);
-                currentExerciseName.textContent = 'Error loading';
-                currentCategory.textContent = 'Error';
-            }
-        }
+        overlayCtx.beginPath();
+        overlayCtx.arc(x, y, radius, 0, 2*Math.PI);
+        overlayCtx.fillStyle = color;
+        overlayCtx.fill();
+        overlayCtx.strokeStyle = 'rgba(255,255,255,0.7)';
+        overlayCtx.lineWidth = isKey ? 2.5 : 1.5;
+        overlayCtx.stroke();
+    });
+}
 
-        // Fetch categories
-        async function fetchCategories() {
-            try {
-                const response = await fetch('/api/categories');
-                categories = await response.json();
-                
-                // Populate category dropdown
-                categories.forEach(category => {
-                    const option = document.createElement('option');
-                    option.value = category;
-                    option.textContent = category;
-                    categorySelect.appendChild(option);
-                });
-            } catch (error) {
-                console.error('Error fetching categories:', error);
-                showMessage('Failed to load categories', 'error');
-            }
-        }
+// ═══════════════════════════════════════════════════
+// UI HELPERS
+// ═══════════════════════════════════════════════════
+function showMsg(txt, type='success') {
+    els.msg.textContent = txt;
+    els.msg.className   = `status-message ${type}`;
+    els.msg.style.display = 'block';
+    setTimeout(() => els.msg.style.display = 'none', 3500);
+}
 
-        // Fetch exercises for a category
-        async function fetchExercises(category) {
-            try {
-                const response = await fetch(`/api/exercises/${category}`);
-                const exercises = await response.json();
-                exercisesByCategory[category] = exercises;
-                
-                // Populate exercise dropdown
-                exerciseSelect.innerHTML = '<option value="">Select Exercise...</option>';
-                exercises.forEach(exercise => {
-                    const option = document.createElement('option');
-                    option.value = exercise.key;
-                    option.textContent = exercise.name;
-                    exerciseSelect.appendChild(option);
-                });
-                
-                exerciseSelect.disabled = false;
-            } catch (error) {
-                console.error('Error fetching exercises:', error);
-                showMessage('Failed to load exercises', 'error');
-            }
-        }
+function colorForFeedback(fb) {
+    if (!fb) return '#00f5ff';
+    if (fb.includes('GOOD') || fb.includes('DEPTH') || fb.includes('EXTENSION')) return '#00ff88';
+    if (fb === 'FIX FORM') return '#ff4444';
+    return '#00f5ff';
+}
 
-        // Select exercise
-        async function selectExercise(exerciseKey) {
-            try {
-                startBtn.disabled = true;
-                startBtn.textContent = 'Loading...';
-                
-                const response = await fetch('/api/select_exercise', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ exercise_key: exerciseKey })
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    currentExerciseKey = data.exercise_key;
-                    currentExerciseName.textContent = data.exercise_name;
-                    
-                    // Update category display
-                    const selectedCategory = categorySelect.value;
-                    currentCategory.textContent = selectedCategory;
-                    
-                    showMessage(`✓ Switched to ${data.exercise_name}`, 'success');
-                } else {
-                    showMessage('Failed to switch exercise', 'error');
-                }
-            } catch (error) {
-                console.error('Error selecting exercise:', error);
-                showMessage('Error switching exercise', 'error');
-            } finally {
-                startBtn.disabled = false;
-                startBtn.textContent = 'Start Analysis';
-            }
-        }
+function updateUI() {
+    if (analysisActive) {
+        els.aStatus.textContent  = 'Analyzing';
+        els.aStatus.style.color  = '#00ff88';
+        els.start.disabled       = true;
+        els.stop.disabled        = false;
+        els.cat.disabled         = true;
+        els.ex.disabled          = true;
+    } else {
+        els.aStatus.textContent  = 'Idle';
+        els.aStatus.style.color  = '#00f5ff';
+        els.start.disabled       = !els.ex.value || !cameraReady;
+        els.stop.disabled        = true;
+        els.cat.disabled         = false;
+        els.ex.disabled          = !els.cat.value;
+        // Reset HUD
+        els.hudReps.textContent  = '0';
+        els.hudFeedback.textContent     = 'READY';
+        els.hudFeedback.style.color     = '#00f5ff';
+        els.hudFeedbackBox.style.borderColor = '#00f5ff';
+        els.hudIssue.textContent        = '';
+        els.progress.style.width        = '0%';
+        overlayCtx.clearRect(0,0,els.overlay.width,els.overlay.height);
+    }
+}
 
-        // Start / Stop analysis
-        async function setAnalysis(active) {
-            try {
-                const url = active ? '/api/analysis/start' : '/api/analysis/stop';
-                const response = await fetch(url, { method: 'POST' });
-                const data = await response.json();
-                if (data.success) {
-                    analysisActive = data.analysis_active;
-                    updateAnalysisUI();
-                    showMessage(active ? 'Analysis started' : 'Analysis stopped', 'success');
-                } else {
-                    showMessage('Failed to update analysis state', 'error');
-                }
-            } catch (error) {
-                console.error('Error updating analysis state:', error);
-                showMessage('Error updating analysis state', 'error');
-            }
-        }
+function updateFeedback(d) {
+    latestFormData = d;
 
-        // Event listeners
-        categorySelect.addEventListener('change', (e) => {
-            const category = e.target.value;
-            if (category) {
-                fetchExercises(category);
-                startBtn.disabled = true;
-            } else {
-                exerciseSelect.innerHTML = '<option value="">Select Category First...</option>';
-                exerciseSelect.disabled = true;
-                startBtn.disabled = true;
-            }
+    // Reps
+    els.hudReps.textContent  = d.reps;
+    els.reps.textContent     = d.reps;
+
+    // Feedback text + color
+    const c = colorForFeedback(d.feedback);
+    els.hudFeedback.textContent          = d.feedback || '—';
+    els.hudFeedback.style.color          = c;
+    els.hudFeedbackBox.style.borderColor = c;
+    els.feedback.textContent             = d.feedback || '—';
+    els.feedback.style.color             = c;
+
+    // Form issue
+    els.hudIssue.textContent = d.form_issue || '';
+    if (d.form_issue) {
+        els.formStatus.textContent  = d.form_issue;
+        els.formStatus.style.color  = '#ff4444';
+    } else if (d.pose_detected) {
+        els.formStatus.textContent  = '✓ Pose detected';
+        els.formStatus.style.color  = '#00ff88';
+    } else {
+        els.formStatus.textContent  = '⚠️ No pose';
+        els.formStatus.style.color  = '#ffaa00';
+    }
+
+    // Progress bar (range of motion 0-100)
+    if (d.progress !== undefined) {
+        const pct = Math.min(100, Math.max(0, d.progress * 100));
+        els.progress.style.width = pct + '%';
+        els.progress.classList.toggle('bad', d.feedback === 'FIX FORM');
+    }
+}
+
+// ═══════════════════════════════════════════════════
+// API CALLS
+// ═══════════════════════════════════════════════════
+fetch('/api/current_exercise').then(r=>r.json()).then(d=>{
+    els.exName.textContent = d.exercise_name;
+    els.exCat.textContent  = d.category;
+});
+
+fetch('/api/categories').then(r=>r.json()).then(cats=>{
+    cats.forEach(c=>{
+        const o = document.createElement('option');
+        o.value = o.textContent = c;
+        els.cat.appendChild(o);
+    });
+});
+
+els.cat.addEventListener('change', e=>{
+    if (!e.target.value) {
+        els.ex.innerHTML = '<option value="">Select…</option>';
+        els.ex.disabled  = true;
+        updateUI(); return;
+    }
+    fetch(`/api/exercises/${e.target.value}`).then(r=>r.json()).then(exs=>{
+        els.ex.innerHTML = '<option value="">Select…</option>';
+
+        const featured = exs.filter(x => FEATURED.has(x.key));
+        const rest     = exs.filter(x => !FEATURED.has(x.key));
+
+        if (featured.length) {
+            const grp = document.createElement('optgroup');
+            grp.label = '★  FEATURED EXERCISES';
+            featured.forEach(ex=>{
+                const o = document.createElement('option');
+                o.value = ex.key;
+                o.textContent = ex.name;
+                o.className = 'featured';
+                grp.appendChild(o);
+            });
+            els.ex.appendChild(grp);
+        }
+        if (rest.length) {
+            const grp = document.createElement('optgroup');
+            grp.label = 'OTHER EXERCISES';
+            rest.forEach(ex=>{
+                const o = document.createElement('option');
+                o.value = ex.key;
+                o.textContent = ex.name;
+                grp.appendChild(o);
+            });
+            els.ex.appendChild(grp);
+        }
+        els.ex.disabled = false;
+        updateUI();
+    });
+});
+
+els.ex.addEventListener('change', updateUI);
+
+els.start.addEventListener('click', async ()=>{
+    if (!els.ex.value || !cameraReady) return;
+    els.start.disabled   = true;
+    els.start.textContent = 'Loading…';
+    // 1. Select exercise
+    const r1 = await fetch('/api/select_exercise', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({exercise_key: els.ex.value})
+    });
+    const d1 = await r1.json();
+    els.start.textContent = 'START';
+    if (!d1.success) { showMsg('Failed to switch exercise','error'); updateUI(); return; }
+    els.exName.textContent = d1.exercise_name;
+    els.exCat.textContent  = els.cat.value;
+    // 2. Start analysis
+    const r2 = await fetch('/api/analysis/start',{method:'POST'});
+    const d2 = await r2.json();
+    if (d2.success) {
+        analysisActive = true;
+        updateUI();
+        showMsg('▶️ Started','success');
+        startFrameLoop();
+    }
+});
+
+els.stop.addEventListener('click', async ()=>{
+    const r = await fetch('/api/analysis/stop',{method:'POST'});
+    const d = await r.json();
+    if (d.success) {
+        analysisActive = false;
+        latestFormData = null;
+        stopFrameLoop();
+        updateUI();
+        showMsg('⏸️ Stopped','success');
+    }
+});
+
+// ═══════════════════════════════════════════════════
+// CAMERA
+// ═══════════════════════════════════════════════════
+navigator.mediaDevices.getUserMedia({
+    video:{ width:{ideal:1280}, height:{ideal:720}, facingMode:'user' }
+}).then(stream=>{
+    els.video.srcObject = stream;
+    els.video.onloadedmetadata = ()=>{
+        cameraReady = true;
+        updateUI();
+        showMsg('📷 Camera ready','success');
+        // Start MediaPipe visualization loop
+        (async function poseLoop(){
+            if (cameraReady && els.video.videoWidth > 0)
+                await mpPose.send({image: els.video});
+            requestAnimationFrame(poseLoop);
+        })();
+    };
+}).catch(()=>{ showMsg('❌ Camera denied','error'); cameraReady = false; });
+
+// ═══════════════════════════════════════════════════
+// FRAME ANALYSIS LOOP
+// Key fixes for ngrok 400 errors:
+//  1. Resize to 480p before sending (smaller payload)
+//  2. Quality 0.4 (very small JPEG)
+//  3. 300ms interval (not 150ms)
+//  4. Skip if previous request still pending
+// ═══════════════════════════════════════════════════
+function startFrameLoop() {
+    stopFrameLoop();
+    frameInterval = setInterval(analyzeFrame, 300); // 3 fps - safe for ngrok
+}
+function stopFrameLoop() {
+    if (frameInterval) { clearInterval(frameInterval); frameInterval = null; }
+}
+
+async function analyzeFrame() {
+    if (!analysisActive || !cameraReady || els.video.videoWidth === 0) return;
+    if (sendingFrame) return; // don't stack requests
+    sendingFrame = true;
+
+    try {
+        // Downscale to 480p to keep payload < 50KB
+        const SEND_W = 640, SEND_H = 480;
+        els.canvas.width  = SEND_W;
+        els.canvas.height = SEND_H;
+        ctx.drawImage(els.video, 0, 0, SEND_W, SEND_H);
+
+        // quality 0.4 keeps it ~20-40KB
+        const imgB64 = els.canvas.toDataURL('image/jpeg', 0.4).split(',')[1];
+
+        const resp = await fetch('/api/analyze/frame', {
+            method:  'POST',
+            headers: {'Content-Type':'application/json'},
+            body:    JSON.stringify({image: imgB64})
         });
 
-        exerciseSelect.addEventListener('change', (e) => {
-            const exerciseKey = e.target.value;
-            // Enable start only if an exercise is chosen and analysis is not already active
-            startBtn.disabled = !exerciseKey || analysisActive;
-        });
+        if (!resp.ok) {
+            console.warn('analyze/frame returned', resp.status);
+            sendingFrame = false;
+            return;
+        }
 
-        startBtn.addEventListener('click', async () => {
-            const exerciseKey = exerciseSelect.value;
-            if (!exerciseKey) return;
-            // First select/switch exercise, then start analysis
-            await selectExercise(exerciseKey);
-            await setAnalysis(true);
-        });
+        const d = await resp.json();
 
-        stopBtn.addEventListener('click', async () => {
-            if (!analysisActive) return;
-            await setAnalysis(false);
-        });
-
-        // Initialize on page load
-        window.addEventListener('DOMContentLoaded', () => {
-            fetchCurrentExercise();
-            fetchCategories();
-        });
-    </script>
+        if (d.status === 'active') {
+            updateFeedback(d);
+        } else if (d.status === 'paused') {
+            // server paused – stop trying
+            stopFrameLoop();
+            analysisActive = false;
+            updateUI();
+        }
+    } catch (err) {
+        console.error('Frame error:', err);
+    } finally {
+        sendingFrame = false;
+    }
+}
+</script>
 </body>
 </html>
