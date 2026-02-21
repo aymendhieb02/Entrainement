@@ -557,10 +557,10 @@
           "knee": {
             "type": "primary",
             "standing": 178,
-            "parallel": 90,
+            "parallel": 110,
             "deep": 60,
             "min_acceptable": 100,
-            "tolerance": 10
+            "tolerance": 30
           },
           "hip": {
             "type": "primary",
